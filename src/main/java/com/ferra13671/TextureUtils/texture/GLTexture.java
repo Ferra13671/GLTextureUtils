@@ -83,53 +83,6 @@ public class GLTexture implements GlTex {
         this.wrapping = textureWrapping;
     }
 
-    public GLTexture resize(int width, int height) {
-        GlController controller = GLTextureSystem.getGlController();
-
-        GLTexture texture = new GLTexture(name.concat(String.format("_resized_%s_%s", width, height)));
-        texture.texId = GL11.glGenTextures();
-        texture.width = this.width;
-        texture.height = this.height;
-        texture.wrapping = this.wrapping;
-        texture.filtering = this.filtering;
-
-        int pixelCount = width * height * 4;
-        ByteBuffer srcBuffer = BufferUtils.createByteBuffer(pixelCount);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, getTexId());
-        GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, srcBuffer);
-
-        // Масштабируем буфер
-        ByteBuffer dstBuffer = scaleNearest(srcBuffer, width, height, width, height);
-
-        // Создаем новую текстуру
-        int dstTexId = GL11.glGenTextures();
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, dstTexId);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8,
-                width, height, 0,
-                GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, dstBuffer);
-        texture.applyFiltering(controller, texture.filtering);
-        texture.applyWrapping(controller, texture.wrapping);
-
-        return texture;
-    }
-
-    private static ByteBuffer scaleNearest(ByteBuffer src, int sw, int sh, int dw, int dh) {
-        ByteBuffer dst = BufferUtils.createByteBuffer(dw * dh * 4);
-        for (int y = 0; y < dh; y++) {
-            int sy = y * sh / dh;
-            for (int x = 0; x < dw; x++) {
-                int sx = x * sw / dw;
-                int srcPos = (sy * sw + sx) * 4;
-                dst.put(src.get(srcPos));
-                dst.put(src.get(srcPos + 1));
-                dst.put(src.get(srcPos + 2));
-                dst.put(src.get(srcPos + 3));
-            }
-        }
-        dst.flip();
-        return dst;
-    }
-
     public GLTexture subTexture(float u1, float v1, float u2, float v2) {
         GLTexture texture = new GLTexture(name.concat(String.format("_sub_%s", new Random().nextInt())));
         GlController controller = GLTextureSystem.getGlController();
