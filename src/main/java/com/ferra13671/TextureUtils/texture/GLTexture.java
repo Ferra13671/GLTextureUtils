@@ -81,6 +81,51 @@ public class GLTexture implements GlTex {
         this.wrapping = textureWrapping;
     }
 
+    public GLTexture resize(int width, int height) {
+        GlController controller = GLTextureSystem.getGlController();
+
+        GLTexture texture = new GLTexture(name.concat(String.format("_resized_%s_%s", width, height)));
+        texture.texId = GL11.glGenTextures();
+        texture.width = this.width;
+        texture.height = this.height;
+        texture.wrapping = this.wrapping;
+        texture.filtering = this.filtering;
+
+        controller.bindTexture(texture.texId);
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0,
+                GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, 0);
+        texture.applyFiltering(controller, texture.filtering);
+        texture.applyWrapping(controller, texture.wrapping);
+
+        int fboRead = GL30.glGenFramebuffers();
+        GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, fboRead);
+        GL30.glFramebufferTexture2D(GL30.GL_READ_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0,
+                GL11.GL_TEXTURE_2D, getTexId(), 0);
+
+        int fboDraw = GL30.glGenFramebuffers();
+        GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, fboDraw);
+        GL30.glFramebufferTexture2D(GL30.GL_DRAW_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0,
+                GL11.GL_TEXTURE_2D, texture.texId, 0);
+
+        int statusRead = GL30.glCheckFramebufferStatus(GL30.GL_READ_FRAMEBUFFER);
+        int statusDraw = GL30.glCheckFramebufferStatus(GL30.GL_DRAW_FRAMEBUFFER);
+        if (statusRead != GL30.GL_FRAMEBUFFER_COMPLETE || statusDraw != GL30.GL_FRAMEBUFFER_COMPLETE) {
+            throw new RuntimeException("FBO not complete: read=" + statusRead + " draw=" + statusDraw);
+        }
+
+        GL30.glBlitFramebuffer(
+                0, 0, width, height,
+                0, 0, width, height,
+                GL11.GL_COLOR_BUFFER_BIT, GL11.GL_LINEAR
+        );
+
+        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+        GL30.glDeleteFramebuffers(fboRead);
+        GL30.glDeleteFramebuffers(fboDraw);
+
+        return texture;
+    }
+
     public GLTexture subTexture(float u1, float v1, float u2, float v2) {
         GLTexture texture = new GLTexture(name.concat(String.format("_sub_%s", new Random().nextInt())));
         GlController controller = GLTextureSystem.getGlController();
