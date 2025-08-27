@@ -4,10 +4,12 @@ import com.ferra13671.TextureUtils.Controller.GlController;
 import com.ferra13671.TextureUtils.GLTextureSystem;
 import com.ferra13671.TextureUtils.GlTex;
 import com.ferra13671.TextureUtils.builder.GLTextureInfo;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
 
+import java.nio.ByteBuffer;
 import java.util.Random;
 
 import static org.lwjgl.stb.STBImage.nstbi_image_free;
@@ -91,39 +93,41 @@ public class GLTexture implements GlTex {
         texture.wrapping = this.wrapping;
         texture.filtering = this.filtering;
 
-        controller.bindTexture(texture.texId);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0,
-                GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, 0);
+        int pixelCount = width * height * 4;
+        ByteBuffer srcBuffer = BufferUtils.createByteBuffer(pixelCount);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, getTexId());
+        GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, srcBuffer);
+
+        // Масштабируем буфер
+        ByteBuffer dstBuffer = scaleNearest(srcBuffer, width, height, width, height);
+
+        // Создаем новую текстуру
+        int dstTexId = GL11.glGenTextures();
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, dstTexId);
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8,
+                width, height, 0,
+                GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, dstBuffer);
         texture.applyFiltering(controller, texture.filtering);
         texture.applyWrapping(controller, texture.wrapping);
 
-        int fboRead = GL30.glGenFramebuffers();
-        GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, fboRead);
-        GL30.glFramebufferTexture2D(GL30.GL_READ_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0,
-                GL11.GL_TEXTURE_2D, getTexId(), 0);
-
-        int fboDraw = GL30.glGenFramebuffers();
-        GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, fboDraw);
-        GL30.glFramebufferTexture2D(GL30.GL_DRAW_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0,
-                GL11.GL_TEXTURE_2D, texture.texId, 0);
-
-        int statusRead = GL30.glCheckFramebufferStatus(GL30.GL_READ_FRAMEBUFFER);
-        int statusDraw = GL30.glCheckFramebufferStatus(GL30.GL_DRAW_FRAMEBUFFER);
-        if (statusRead != GL30.GL_FRAMEBUFFER_COMPLETE || statusDraw != GL30.GL_FRAMEBUFFER_COMPLETE) {
-            throw new RuntimeException("FBO not complete: read=" + statusRead + " draw=" + statusDraw);
-        }
-
-        GL30.glBlitFramebuffer(
-                0, 0, width, height,
-                0, 0, width, height,
-                GL11.GL_COLOR_BUFFER_BIT, GL11.GL_LINEAR
-        );
-
-        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        GL30.glDeleteFramebuffers(fboRead);
-        GL30.glDeleteFramebuffers(fboDraw);
-
         return texture;
+    }
+
+    private static ByteBuffer scaleNearest(ByteBuffer src, int sw, int sh, int dw, int dh) {
+        ByteBuffer dst = BufferUtils.createByteBuffer(dw * dh * 4);
+        for (int y = 0; y < dh; y++) {
+            int sy = y * sh / dh;
+            for (int x = 0; x < dw; x++) {
+                int sx = x * sw / dw;
+                int srcPos = (sy * sw + sx) * 4;
+                dst.put(src.get(srcPos));
+                dst.put(src.get(srcPos + 1));
+                dst.put(src.get(srcPos + 2));
+                dst.put(src.get(srcPos + 3));
+            }
+        }
+        dst.flip();
+        return dst;
     }
 
     public GLTexture subTexture(float u1, float v1, float u2, float v2) {
