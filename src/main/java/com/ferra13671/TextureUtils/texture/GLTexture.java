@@ -4,19 +4,17 @@ import com.ferra13671.TextureUtils.Controller.GlController;
 import com.ferra13671.TextureUtils.GLTextureSystem;
 import com.ferra13671.TextureUtils.GlTex;
 import com.ferra13671.TextureUtils.builder.GLTextureInfo;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
 
-import java.nio.ByteBuffer;
 import java.util.Random;
 
 import static org.lwjgl.stb.STBImage.nstbi_image_free;
 
 /**
  * @author Ferra13671
- * @LastUpdate 1.6.1
+ * @LastUpdate 1.6.2
  */
 
 public class GLTexture implements GlTex {
@@ -38,35 +36,37 @@ public class GLTexture implements GlTex {
     private GLTexture create(GLTextureInfo glTextureInfo) {
         GlController controller = GLTextureSystem.getGlController();
 
-        texId = controller.genTexId();
+        controller.run(() -> {
+            texId = controller.genTexId();
 
-        long bufferAddress = MemoryUtil.memAddress(glTextureInfo.getPixels());
+            long bufferAddress = MemoryUtil.memAddress(glTextureInfo.getPixels());
 
-        this.width = glTextureInfo.getWidth();
-        this.height = glTextureInfo.getHeight();
+            this.width = glTextureInfo.getWidth();
+            this.height = glTextureInfo.getHeight();
 
-        controller.bindTexture(texId);
-        controller.texParameter(GL11.GL_TEXTURE_2D, 33085, 0);
-        controller.texParameter(GL11.GL_TEXTURE_2D, 33082, 0);
-        controller.texParameter(GL11.GL_TEXTURE_2D, 33083, 0);
-        controller.texParameter(GL11.GL_TEXTURE_2D, 34049, 0.0F);
-        applyFiltering(controller, glTextureInfo.getFiltering());
-        applyWrapping(controller, glTextureInfo.getWrapping());
-        this.colorMode = glTextureInfo.getColorMode();
+            controller.bindTexture(texId);
+            controller.texParameter(GL11.GL_TEXTURE_2D, 33085, 0);
+            controller.texParameter(GL11.GL_TEXTURE_2D, 33082, 0);
+            controller.texParameter(GL11.GL_TEXTURE_2D, 33083, 0);
+            controller.texParameter(GL11.GL_TEXTURE_2D, 34049, 0.0F);
+            applyFiltering(controller, glTextureInfo.getFiltering());
+            applyWrapping(controller, glTextureInfo.getWrapping());
+            this.colorMode = glTextureInfo.getColorMode();
 
-        controller.texImage2D(GL11.GL_TEXTURE_2D, 0, glTextureInfo.getColorMode().glId, width, height, 0, glTextureInfo.getColorMode().glId, 5121, null);
-        controller.pixelStore(GL11.GL_UNPACK_ROW_LENGTH, 0);
-        controller.pixelStore(GL11.GL_UNPACK_SKIP_PIXELS, 0);
-        controller.pixelStore(GL11.GL_UNPACK_SKIP_ROWS, 0);
-        controller.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 4);
-        controller.texSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height, glTextureInfo.getColorMode().glId, 5121, bufferAddress);
+            controller.texImage2D(GL11.GL_TEXTURE_2D, 0, glTextureInfo.getColorMode().glId, width, height, 0, glTextureInfo.getColorMode().glId, 5121, null);
+            controller.pixelStore(GL11.GL_UNPACK_ROW_LENGTH, 0);
+            controller.pixelStore(GL11.GL_UNPACK_SKIP_PIXELS, 0);
+            controller.pixelStore(GL11.GL_UNPACK_SKIP_ROWS, 0);
+            controller.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 4);
+            controller.texSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, width, height, glTextureInfo.getColorMode().glId, 5121, bufferAddress);
 
-        controller.bindTexture(0);
+            controller.bindTexture(0);
 
-        if (glTextureInfo.isUsingStb())
-            nstbi_image_free(bufferAddress);
-        else
-            MemoryUtil.memFree(glTextureInfo.getPixels());
+            if (glTextureInfo.isUsingStb())
+                nstbi_image_free(bufferAddress);
+            else
+                MemoryUtil.memFree(glTextureInfo.getPixels());
+        });
 
         return this;
     }
@@ -84,43 +84,46 @@ public class GLTexture implements GlTex {
     }
 
     public GLTexture subTexture(float u1, float v1, float u2, float v2) {
-        GLTexture texture = new GLTexture(name.concat(String.format("_sub_%s", new Random().nextInt())));
         GlController controller = GLTextureSystem.getGlController();
-        texture.texId = controller.genTexId();
+        GLTexture texture = new GLTexture(name.concat(String.format("_sub_%s", new Random().nextInt())));
 
-        int fbo = GL30.glGenFramebuffers();
-        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);
-        GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL30.GL_TEXTURE_2D, this.texId, 0);
+        controller.run(() -> {
+            texture.texId = controller.genTexId();
 
-        if (GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER) != GL30.GL_FRAMEBUFFER_COMPLETE)
-            throw new RuntimeException(String.format("An error occurred while creating FrameBuffer for subtexture '%s'.", texture.getName()));
+            int fbo = GL30.glGenFramebuffers();
+            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);
+            GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_COLOR_ATTACHMENT0, GL30.GL_TEXTURE_2D, this.texId, 0);
 
-        texture.width = (int) ((u2 - u1) * width);
-        texture.height = (int) ((v2 - v1) * height);
+            if (GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER) != GL30.GL_FRAMEBUFFER_COMPLETE)
+                throw new RuntimeException(String.format("An error occurred while creating FrameBuffer for subtexture '%s'.", texture.getName()));
 
-        controller.bindTexture(texture.texId);
-        controller.texParameter(GL11.GL_TEXTURE_2D, 33085, 0);
-        controller.texParameter(GL11.GL_TEXTURE_2D, 33082, 0);
-        controller.texParameter(GL11.GL_TEXTURE_2D, 33083, 0);
-        controller.texParameter(GL11.GL_TEXTURE_2D, 34049, 0.0F);
-        texture.applyFiltering(controller, filtering);
-        texture.applyWrapping(controller, wrapping);
-        texture.colorMode = colorMode;
+            texture.width = (int) ((u2 - u1) * width);
+            texture.height = (int) ((v2 - v1) * height);
 
-        controller.texImage2D(GL11.GL_TEXTURE_2D, 0, texture.colorMode.glId, texture.width, texture.height, 0, texture.colorMode.glId, 5121, null);
-        controller.pixelStore(GL11.GL_UNPACK_ROW_LENGTH, 0);
-        controller.pixelStore(GL11.GL_UNPACK_SKIP_PIXELS, 0);
-        controller.pixelStore(GL11.GL_UNPACK_SKIP_ROWS, 0);
-        controller.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 4);
+            controller.bindTexture(texture.texId);
+            controller.texParameter(GL11.GL_TEXTURE_2D, 33085, 0);
+            controller.texParameter(GL11.GL_TEXTURE_2D, 33082, 0);
+            controller.texParameter(GL11.GL_TEXTURE_2D, 33083, 0);
+            controller.texParameter(GL11.GL_TEXTURE_2D, 34049, 0.0F);
+            texture.applyFiltering(controller, filtering);
+            texture.applyWrapping(controller, wrapping);
+            texture.colorMode = colorMode;
 
-        GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0,
-                0, 0,
-                (int) (u1 * width), (int) (v1 * height),
-                texture.width, texture.height);
+            controller.texImage2D(GL11.GL_TEXTURE_2D, 0, texture.colorMode.glId, texture.width, texture.height, 0, texture.colorMode.glId, 5121, null);
+            controller.pixelStore(GL11.GL_UNPACK_ROW_LENGTH, 0);
+            controller.pixelStore(GL11.GL_UNPACK_SKIP_PIXELS, 0);
+            controller.pixelStore(GL11.GL_UNPACK_SKIP_ROWS, 0);
+            controller.pixelStore(GL11.GL_UNPACK_ALIGNMENT, 4);
 
-        controller.bindTexture(0);
-        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        GL30.glDeleteFramebuffers(fbo);
+            GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0,
+                    0, 0,
+                    (int) (u1 * width), (int) (v1 * height),
+                    texture.width, texture.height);
+
+            controller.bindTexture(0);
+            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+            GL30.glDeleteFramebuffers(fbo);
+        });
 
         return texture;
     }
