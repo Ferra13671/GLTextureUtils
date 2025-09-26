@@ -23,7 +23,7 @@
  * questions.
  */
 
-package com.ferra13671.TextureUtils.GifUtils.gif;
+package com.ferra13671.TextureUtils.utils.gif.gif;
 
 import org.w3c.dom.Node;
 

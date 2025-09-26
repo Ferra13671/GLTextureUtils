@@ -23,9 +23,9 @@
  * questions.
  */
 
-package com.ferra13671.TextureUtils.GifUtils.gif;
+package com.ferra13671.TextureUtils.utils.gif.gif;
 
-import com.ferra13671.TextureUtils.GifUtils.common.ReaderUtil;
+import com.ferra13671.TextureUtils.utils.gif.common.ReaderUtil;
 
 import javax.imageio.ImageReader;
 import javax.imageio.spi.ImageReaderSpi;

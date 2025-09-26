@@ -1,4 +1,4 @@
-package com.ferra13671.TextureUtils.Utils;
+package com.ferra13671.TextureUtils.utils;
 
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 
 /**
  * @author Ferra13671
- * @LastUpdate 1.6
+ * @LastUpdate 1.6.3
  */
 
 public class Utils {

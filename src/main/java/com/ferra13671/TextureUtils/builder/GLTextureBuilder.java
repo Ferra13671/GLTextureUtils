@@ -8,39 +8,42 @@ import com.ferra13671.TextureUtils.loader.TextureLoader;
 
 /**
  * @author Ferra13671
- * @LastUpdate 1.6
+ * @LastUpdate 1.6.3
  */
 
-public class GLTextureBuilder {
+public class GLTextureBuilder<T> {
     private String name = null;
-    private TextureLoader loader = null;
+    private T path = null;
+    private final TextureLoader<T> loader;
     private ColorMode colorMode = ColorMode.RGBA;
     private TextureFiltering filtering = null;
     private TextureWrapping wrapping = null;
 
-    private GLTextureBuilder() {}
+    public GLTextureBuilder(TextureLoader<T> loader) {
+        this.loader = loader;
+    }
 
-    public GLTextureBuilder name(String name) {
+    public GLTextureBuilder<T> name(String name) {
         this.name = name;
         return this;
     }
 
-    public GLTextureBuilder loader(TextureLoader loader) {
-        this.loader = loader;
+    public GLTextureBuilder<T> path(T path) {
+        this.path = path;
         return this;
     }
 
-    public GLTextureBuilder colorMode(ColorMode colorMode) {
+    public GLTextureBuilder<T> colorMode(ColorMode colorMode) {
         this.colorMode = colorMode;
         return this;
     }
 
-    public GLTextureBuilder filtering(TextureFiltering filtering) {
+    public GLTextureBuilder<T> filtering(TextureFiltering filtering) {
         this.filtering = filtering;
         return this;
     }
 
-    public GLTextureBuilder wrapping(TextureWrapping wrapping) {
+    public GLTextureBuilder<T> wrapping(TextureWrapping wrapping) {
         this.wrapping = wrapping;
         return this;
     }
@@ -48,7 +51,7 @@ public class GLTextureBuilder {
     public GLTexture build() {
         try {
             checkArguments();
-            return GLTexture.of(name, loader.load(colorMode, filtering, wrapping));
+            return GLTexture.of(name, loader.load(path, colorMode, filtering, wrapping));
         } catch (Exception e) {
             throw new UnsupportedOperationException(e);
         }
@@ -59,15 +62,13 @@ public class GLTextureBuilder {
             throw new IllegalArgumentException("Name cannot be null.");
         if (loader == null)
             throw new IllegalArgumentException(String.format("Loader in texture '%s' cannot be null.", name));
+        if (path == null)
+            throw new IllegalArgumentException(String.format("Path in texture '%s' cannot be null.", name));
         if (colorMode == null)
             throw new IllegalArgumentException(String.format("ColorMode in texture '%s' cannot be null.", name));
         if (filtering == null)
             throw new IllegalArgumentException(String.format("TextureFiltering in texture '%s' cannot be null.", name));
         if (wrapping == null)
             throw new IllegalArgumentException(String.format("TextureWrapping in texture '%s' cannot be null.", name));
-    }
-
-    public static GLTextureBuilder builder() {
-        return new GLTextureBuilder();
     }
 }

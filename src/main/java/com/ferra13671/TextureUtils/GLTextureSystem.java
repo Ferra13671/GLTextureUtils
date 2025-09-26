@@ -1,14 +1,14 @@
 package com.ferra13671.TextureUtils;
 
-import com.ferra13671.TextureUtils.Controller.DefaultGlController;
-import com.ferra13671.TextureUtils.Controller.GlController;
+import com.ferra13671.TextureUtils.controller.DefaultGlController;
+import com.ferra13671.TextureUtils.controller.GlController;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author Ferra13671
- * @LastUpdate 1.6
+ * @LastUpdate 1.6.3
  */
 
 public class GLTextureSystem {

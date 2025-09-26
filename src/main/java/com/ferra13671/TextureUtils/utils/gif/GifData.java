@@ -1,11 +1,11 @@
-package com.ferra13671.TextureUtils.GifUtils;
+package com.ferra13671.TextureUtils.utils.gif;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
 
 /**
  * @author Ferra13671
- * @LastUpdate 1.5
+ * @LastUpdate 1.6.3
  */
 
 public class GifData {

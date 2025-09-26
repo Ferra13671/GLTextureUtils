@@ -1,11 +1,11 @@
 package com.ferra13671.TextureUtils.loader;
 
-import com.ferra13671.TextureUtils.GifUtils.GifData;
 import com.ferra13671.TextureUtils.PathMode;
 import com.ferra13671.TextureUtils.builder.GLGifInfo;
 import com.ferra13671.TextureUtils.texture.ColorMode;
 import com.ferra13671.TextureUtils.texture.TextureFiltering;
 import com.ferra13671.TextureUtils.texture.TextureWrapping;
+import com.ferra13671.TextureUtils.utils.gif.GifData;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author Ferra13671
- * @LastUpdate 1.6
+ * @LastUpdate 1.6.3
  */
 
 public final class GifLoaders {
@@ -27,7 +27,7 @@ public final class GifLoaders {
         GifData gifData = decompileMode.gifDecompiler.decompile(iis);
         return new GLGifInfo(gifData.images.stream().map(bufferedImage -> {
             try {
-                return TextureLoaders.BUFFERED_IMAGE.apply(bufferedImage).load(ColorMode.RGBA, TextureFiltering.DEFAULT, TextureWrapping.DEFAULT);
+                return TextureLoaders.BUFFERED_IMAGE.load(bufferedImage, ColorMode.RGBA, TextureFiltering.DEFAULT, TextureWrapping.DEFAULT);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

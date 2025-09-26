@@ -1,6 +1,6 @@
 package com.ferra13671.TextureUtils.texture;
 
-import com.ferra13671.TextureUtils.Controller.GlController;
+import com.ferra13671.TextureUtils.controller.GlController;
 import com.ferra13671.TextureUtils.GLTextureSystem;
 import com.ferra13671.TextureUtils.GlTex;
 import com.ferra13671.TextureUtils.builder.GLTextureInfo;
@@ -14,7 +14,7 @@ import static org.lwjgl.stb.STBImage.nstbi_image_free;
 
 /**
  * @author Ferra13671
- * @LastUpdate 1.6.2
+ * @LastUpdate 1.6.3
  */
 
 public class GLTexture implements GlTex {

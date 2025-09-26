@@ -23,7 +23,7 @@
  * questions.
  */
 
-package com.ferra13671.TextureUtils.GifUtils.common;
+package com.ferra13671.TextureUtils.utils.gif.common;
 
 import javax.imageio.stream.ImageInputStream;
 import java.awt.*;

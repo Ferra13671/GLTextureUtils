@@ -1,8 +1,7 @@
 package com.ferra13671.TextureUtils.loader;
 
-import com.ferra13671.TextureUtils.*;
-import com.ferra13671.TextureUtils.Utils.Utils;
 import com.ferra13671.TextureUtils.builder.GLTextureInfo;
+import com.ferra13671.TextureUtils.utils.Utils;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryUtil;
 import com.ferra13671.TextureUtils.texture.ColorMode;
@@ -10,66 +9,62 @@ import com.ferra13671.TextureUtils.texture.TextureFiltering;
 import com.ferra13671.TextureUtils.texture.TextureWrapping;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * @author Ferra13671
- * @LastUpdate 1.6
+ * @LastUpdate 1.6.3
  */
 
 public final class TextureLoaders {
-    public static Function<InputStream, TextureLoader> INPUT_STREAM = inputStream -> new TextureLoader() {
+    public static TextureLoader<InputStream> INPUT_STREAM = new TextureLoader<InputStream>() {
         @Override
-        public GLTextureInfo load(ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) throws Exception {
-            ByteBuffer buffer = Utils.readStream(inputStream);
+        public GLTextureInfo load(InputStream path, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) throws Exception {
+            ByteBuffer buffer = Utils.readStream(path);
             buffer.rewind();
 
             AtomicReference<GLTextureInfo> glTextureInfo = new AtomicReference<>(null);
-            Utils.tryGenerate(buffer, inputStream, memoryStack -> {
+            Utils.tryGenerate(buffer, path, memoryStack -> {
                 IntBuffer xBuffer = memoryStack.mallocInt(1);
                 IntBuffer yBuffer = memoryStack.mallocInt(1);
                 IntBuffer channelsBuffer = memoryStack.mallocInt(1);
                 ByteBuffer byteBuffer = STBImage.stbi_load_from_memory(buffer, xBuffer, yBuffer, channelsBuffer, colorMode == ColorMode.RGBA ? 4 : 3);
 
                 if (byteBuffer != null)
-                    glTextureInfo.set(new GLTextureInfo(byteBuffer, xBuffer.get(0), yBuffer.get(0), colorMode, filtering, wrapping, isUsingStb()));
+                    glTextureInfo.set(new GLTextureInfo(byteBuffer, xBuffer.get(0), yBuffer.get(0), colorMode, filtering, wrapping, true));
             });
             return glTextureInfo.get();
         }
-
+    };
+    public static TextureLoader<FileEntry> FILE_ENTRY = new TextureLoader<FileEntry>() {
         @Override
-        public boolean isUsingStb() {
-            return true;
+        public GLTextureInfo load(FileEntry path, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) throws Exception {
+            return INPUT_STREAM.load(path.getPathMode().streamCreateFunction.apply(path.getPath()), colorMode, filtering, wrapping);
         }
     };
-    public static BiFunction<String, PathMode, TextureLoader> PATH = (path, pathMode) -> INPUT_STREAM.apply(pathMode.streamCreateFunction.apply(path));
-    public static Function<URL, TextureLoader> URL = url -> {
-        try {
-            return INPUT_STREAM.apply(url.openStream());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public static TextureLoader<URL> URL = new TextureLoader<java.net.URL>() {
+        @Override
+        public GLTextureInfo load(URL path, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) throws Exception {
+            return INPUT_STREAM.load(path.openStream(), colorMode, filtering, wrapping);
         }
     };
-    public static Function<BufferedImage, TextureLoader> BUFFERED_IMAGE = bufferedImage -> new TextureLoader() {
+    public static TextureLoader<BufferedImage> BUFFERED_IMAGE = new TextureLoader<BufferedImage>() {
         @Override
-        public GLTextureInfo load(ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) {
+        public GLTextureInfo load(BufferedImage path, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) throws Exception {
             GLTextureInfo glTextureInfo;
 
-            int[] pixels = new int[bufferedImage.getWidth() * bufferedImage.getHeight()];
-            bufferedImage.getRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), pixels, 0, bufferedImage.getWidth());
+            int[] pixels = new int[path.getWidth() * path.getHeight()];
+            path.getRGB(0, 0, path.getWidth(), path.getHeight(), pixels, 0, path.getWidth());
 
-            ByteBuffer byteBuffer = MemoryUtil.memAlloc((bufferedImage.getWidth() * bufferedImage.getHeight() * 4));
+            ByteBuffer byteBuffer = MemoryUtil.memAlloc((path.getWidth() * path.getHeight() * 4));
 
-            for (int y = 0; y < bufferedImage.getHeight(); y++) {
-                for (int x = 0; x < bufferedImage.getWidth(); x++) {
-                    int pixel = pixels[y * bufferedImage.getWidth() + x];
+            for (int y = 0; y < path.getHeight(); y++) {
+                for (int x = 0; x < path.getWidth(); x++) {
+                    int pixel = pixels[y * path.getWidth() + x];
                     byteBuffer.put(Utils.getRed(pixel));
                     byteBuffer.put(Utils.getGreen(pixel));
                     byteBuffer.put(Utils.getBlue(pixel));
@@ -78,14 +73,9 @@ public final class TextureLoaders {
             }
             byteBuffer.flip();
 
-            glTextureInfo = new GLTextureInfo(byteBuffer, bufferedImage.getWidth(), bufferedImage.getHeight(), colorMode, filtering, wrapping, isUsingStb());
+            glTextureInfo = new GLTextureInfo(byteBuffer, path.getWidth(), path.getHeight(), colorMode, filtering, wrapping, false);
 
             return glTextureInfo;
-        }
-
-        @Override
-        public boolean isUsingStb() {
-            return false;
         }
     };
 }

@@ -1,8 +1,8 @@
-package com.ferra13671.TextureUtils.GifUtils;
+package com.ferra13671.TextureUtils.utils.gif;
 
-import com.ferra13671.TextureUtils.GifUtils.gif.GIFImageMetadata;
-import com.ferra13671.TextureUtils.GifUtils.gif.GIFImageReader;
-import com.ferra13671.TextureUtils.GifUtils.gif.GIFImageReaderSpi;
+import com.ferra13671.TextureUtils.utils.gif.gif.GIFImageMetadata;
+import com.ferra13671.TextureUtils.utils.gif.gif.GIFImageReader;
+import com.ferra13671.TextureUtils.utils.gif.gif.GIFImageReaderSpi;
 
 import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * @author Ferra13671
- * @LastUpdate 1.5
+ * @LastUpdate 1.6.3
  */
 
 public class GifUtils {
