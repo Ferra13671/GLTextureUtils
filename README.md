@@ -1,5 +1,5 @@
 <p align="left">
-    <img src="https://raw.githubusercontent.com/Ferra13671/GLTextureUtils/main/icon.png" style="width: 30%" alt="logo">
+    <img src="https://raw.githubusercontent.com/Ferra13671/GLTextureUtils/main/logo.png" style="width: 50%" alt="logo">
 </p>
 
 A good utility for simple and customized loading of textures into OpenGL for subsequent use.
