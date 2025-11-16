@@ -1,14 +1,7 @@
 package com.ferra13671.gltextureutils;
 
-import com.ferra13671.gltextureutils.texture.GLTexture;
-
 import java.util.HashMap;
 import java.util.Map;
-
-/**
- * @author Ferra13671
- * @LastUpdate 1.6
- */
 
 public class TextureStorage {
     private static final Map<String, GLTexture> TEXTURES = new HashMap<>();

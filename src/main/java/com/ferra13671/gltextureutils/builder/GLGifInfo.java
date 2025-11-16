@@ -1,26 +1,30 @@
 package com.ferra13671.gltextureutils.builder;
 
-import java.util.List;
+import com.ferra13671.gltextureutils.TextureFiltering;
+import com.ferra13671.gltextureutils.TextureWrapping;
 
-/**
- * @author Ferra13671
- * @LastUpdate 1.6
- */
+import java.io.InputStream;
 
 public class GLGifInfo {
-    private final List<GLTextureInfo> textures;
-    private final int delay;
+    private final InputStream inputStream;
+    private final TextureFiltering filtering;
+    private final TextureWrapping wrapping;
 
-    public GLGifInfo(List<GLTextureInfo> textures, int delay) {
-        this.textures = textures;
-        this.delay = delay;
+    public GLGifInfo(InputStream inputStream, TextureFiltering filtering, TextureWrapping wrapping) {
+        this.inputStream = inputStream;
+        this.filtering = filtering;
+        this.wrapping = wrapping;
     }
 
-    public List<GLTextureInfo> getTextures() {
-        return textures;
+    public InputStream getInputStream() {
+        return inputStream;
     }
 
-    public int getDelay() {
-        return delay;
+    public TextureFiltering getFiltering() {
+        return filtering;
+    }
+
+    public TextureWrapping getWrapping() {
+        return wrapping;
     }
 }

@@ -1,17 +1,12 @@
 package com.ferra13671.gltextureutils;
 
-/**
- * @author Ferra13671
- * @LastUpdate 1.3
- */
-
 public interface GlTex {
 
     void delete();
 
     void bind();
 
-    void unBind();
+    void unbind();
 
     int getWidth();
 

@@ -1,15 +1,10 @@
 package com.ferra13671.gltextureutils.builder;
 
-import com.ferra13671.gltextureutils.texture.ColorMode;
-import com.ferra13671.gltextureutils.texture.TextureFiltering;
-import com.ferra13671.gltextureutils.texture.TextureWrapping;
+import com.ferra13671.gltextureutils.ColorMode;
+import com.ferra13671.gltextureutils.TextureFiltering;
+import com.ferra13671.gltextureutils.TextureWrapping;
 
 import java.nio.ByteBuffer;
-
-/**
- * @author Ferra13671
- * @LastUpdate 1.6
- */
 
 public class GLTextureInfo {
     private final ByteBuffer pixels;

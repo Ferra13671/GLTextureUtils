@@ -5,11 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.function.Function;
 
-/**
- * @author Ferra13671
- * @LastUpdate 1.6
- */
-
 public enum PathMode {
     INSIDE_JAR(path ->
         PathMode.class.getClassLoader().getResourceAsStream(path)

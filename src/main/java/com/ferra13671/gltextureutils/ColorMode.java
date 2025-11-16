@@ -1,11 +1,6 @@
-package com.ferra13671.gltextureutils.texture;
+package com.ferra13671.gltextureutils;
 
 import com.ferra13671.gltextureutils.controller.DefaultGlController;
-
-/**
- * @author Ferra13671
- * @LastUpdate 1.6.3
- */
 
 public enum ColorMode {
     RGB(DefaultGlController.GL_RGB),

@@ -1,40 +1,43 @@
 package com.ferra13671.gltextureutils.builder;
 
-import com.ferra13671.gltextureutils.gif.DecompileMode;
-import com.ferra13671.gltextureutils.gif.GLGif;
+import com.ferra13671.gltextureutils.*;
 import com.ferra13671.gltextureutils.loader.GifLoader;
 
-/**
- * @author Ferra13671
- * @LastUpdate 1.6
- */
-
-public class GLGifBuilder {
+public class GLGifBuilder<T> {
     private String name = null;
-    private GifLoader loader = null;
-    private DecompileMode decompileMode;
+    private T path = null;
+    private final GifLoader<T> loader;
+    private TextureFiltering filtering = null;
+    private TextureWrapping wrapping = null;
 
-    private GLGifBuilder() {}
+    public GLGifBuilder(GifLoader<T> loader) {
+        this.loader = loader;
+    }
 
-    public GLGifBuilder name(String name) {
+    public GLGifBuilder<T> name(String name) {
         this.name = name;
         return this;
     }
 
-    public GLGifBuilder loader(GifLoader loader) {
-        this.loader = loader;
+    public GLGifBuilder<T> path(T path) {
+        this.path = path;
         return this;
     }
 
-    public GLGifBuilder decompileMode(DecompileMode decompileMode) {
-        this.decompileMode = decompileMode;
+    public GLGifBuilder<T> filtering(TextureFiltering filtering) {
+        this.filtering = filtering;
+        return this;
+    }
+
+    public GLGifBuilder<T> wrapping(TextureWrapping wrapping) {
+        this.wrapping = wrapping;
         return this;
     }
 
     public GLGif build() {
         try {
             checkArguments();
-            return GLGif.of(name, loader.load(decompileMode));
+            return new GLGif(this.name, this.loader.load(this.path, this.filtering, this.wrapping));
         } catch (Exception e) {
             throw new UnsupportedOperationException(e);
         }
@@ -44,12 +47,12 @@ public class GLGifBuilder {
         if (name == null)
             throw new IllegalArgumentException("Name cannot be null.");
         if (loader == null)
-            throw new IllegalArgumentException(String.format("Loader in gif '%s' cannot be null.", name));
-        if (decompileMode == null)
-            throw new IllegalArgumentException(String.format("DecompileMode in gif '%s' cannot be null.", name));
-    }
-
-    public static GLGifBuilder builder() {
-        return new GLGifBuilder();
+            throw new IllegalArgumentException(String.format("Loader in texture '%s' cannot be null.", name));
+        if (path == null)
+            throw new IllegalArgumentException(String.format("Path in texture '%s' cannot be null.", name));
+        if (filtering == null)
+            throw new IllegalArgumentException(String.format("TextureFiltering in texture '%s' cannot be null.", name));
+        if (wrapping == null)
+            throw new IllegalArgumentException(String.format("TextureWrapping in texture '%s' cannot be null.", name));
     }
 }

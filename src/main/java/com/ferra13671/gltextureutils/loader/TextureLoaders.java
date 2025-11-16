@@ -1,12 +1,12 @@
 package com.ferra13671.gltextureutils.loader;
 
 import com.ferra13671.gltextureutils.builder.GLTextureInfo;
-import com.ferra13671.gltextureutils.utils.Utils;
+import com.ferra13671.gltextureutils.Utils;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryUtil;
-import com.ferra13671.gltextureutils.texture.ColorMode;
-import com.ferra13671.gltextureutils.texture.TextureFiltering;
-import com.ferra13671.gltextureutils.texture.TextureWrapping;
+import com.ferra13671.gltextureutils.ColorMode;
+import com.ferra13671.gltextureutils.TextureFiltering;
+import com.ferra13671.gltextureutils.TextureWrapping;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -14,11 +14,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.concurrent.atomic.AtomicReference;
-
-/**
- * @author Ferra13671
- * @LastUpdate 1.6.3
- */
 
 public final class TextureLoaders {
     public static TextureLoader<InputStream> INPUT_STREAM = new TextureLoader<InputStream>() {

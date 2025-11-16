@@ -2,11 +2,6 @@ package com.ferra13671.gltextureutils.controller;
 
 import java.nio.ByteBuffer;
 
-/**
- * @author Ferra13671
- * @LastUpdate 1.6.3
- */
-
 public interface GlController {
 
     void run(Runnable runnable);

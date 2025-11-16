@@ -1,7 +1,9 @@
-package com.ferra13671.gltextureutils.utils;
+package com.ferra13671.gltextureutils;
 
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,12 +13,16 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.util.function.Consumer;
 
-/**
- * @author Ferra13671
- * @LastUpdate 1.6.3
- */
-
 public class Utils {
+
+    public static void checkNode(Node node, Consumer<Node> consumer) {
+        consumer.accept(node);
+
+        NodeList list = node.getChildNodes();
+
+        for (int i = 0; i < list.getLength(); i++)
+            consumer.accept(list.item(i));
+    }
 
     public static ByteBuffer readStream(InputStream stream) throws IOException {
         ReadableByteChannel rbChannel = Channels.newChannel(stream);

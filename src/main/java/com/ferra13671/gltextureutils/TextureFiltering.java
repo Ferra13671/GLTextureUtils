@@ -1,11 +1,6 @@
-package com.ferra13671.gltextureutils.texture;
+package com.ferra13671.gltextureutils;
 
 import org.lwjgl.opengl.GL11;
-
-/**
- * @author Ferra13671
- * @LastUpdate 1.6
- */
 
 public enum TextureFiltering {
     DEFAULT(GL11.GL_NEAREST),

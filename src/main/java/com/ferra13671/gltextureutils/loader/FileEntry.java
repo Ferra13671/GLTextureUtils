@@ -2,11 +2,6 @@ package com.ferra13671.gltextureutils.loader;
 
 import com.ferra13671.gltextureutils.PathMode;
 
-/**
- * @author Ferra13671
- * @LastUpdate 1.6.3
- */
-
 public class FileEntry {
     private final String path;
     private final PathMode pathMode;

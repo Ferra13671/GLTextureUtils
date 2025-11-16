@@ -6,11 +6,6 @@ import com.ferra13671.gltextureutils.controller.GlController;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- * @author Ferra13671
- * @LastUpdate 1.6.3
- */
-
 public class GLTextureSystem {
     protected static final List<GlTex> ALL_TEXTURES = new CopyOnWriteArrayList<>();
     /**
@@ -20,7 +15,7 @@ public class GLTextureSystem {
      * with which you can customize what the code will do in this or that method. The default
      * is {@link DefaultGlController}, which does exactly what the default code should do.
      */
-    protected static GlController glController = new DefaultGlController();
+    private static GlController glController = new DefaultGlController();
 
     public static void setGlController(GlController controller) {
         glController = controller;
@@ -28,14 +23,6 @@ public class GLTextureSystem {
 
     public static GlController getGlController() {
         return glController;
-    }
-
-    public static void addTexture(GlTex texture) {
-        ALL_TEXTURES.add(texture);
-    }
-
-    public static void removeTexture(GlTex texture) {
-        ALL_TEXTURES.remove(texture);
     }
 
     public static void close() {

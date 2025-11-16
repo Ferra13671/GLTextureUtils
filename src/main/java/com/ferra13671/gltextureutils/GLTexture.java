@@ -1,8 +1,6 @@
-package com.ferra13671.gltextureutils.texture;
+package com.ferra13671.gltextureutils;
 
 import com.ferra13671.gltextureutils.controller.GlController;
-import com.ferra13671.gltextureutils.GLTextureSystem;
-import com.ferra13671.gltextureutils.GlTex;
 import com.ferra13671.gltextureutils.builder.GLTextureInfo;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -12,15 +10,10 @@ import java.util.Random;
 
 import static org.lwjgl.stb.STBImage.nstbi_image_free;
 
-/**
- * @author Ferra13671
- * @LastUpdate 1.6.3
- */
-
 public class GLTexture implements GlTex {
-    protected int texId;
+    private int texId;
 
-    protected String name;
+    protected final String name;
     protected int width;
     protected int height;
 
@@ -28,9 +21,9 @@ public class GLTexture implements GlTex {
     protected TextureWrapping wrapping;
     protected ColorMode colorMode;
 
-    protected GLTexture(String name) {
+    private GLTexture(String name) {
         this.name = name;
-        GLTextureSystem.addTexture(this);
+        GLTextureSystem.ALL_TEXTURES.add(this);
     }
 
     private GLTexture create(GLTextureInfo glTextureInfo) {
@@ -135,7 +128,7 @@ public class GLTexture implements GlTex {
     @Override
     public void delete() {
         GLTextureSystem.getGlController().deleteTexture(texId);
-        GLTextureSystem.removeTexture(this);
+        GLTextureSystem.ALL_TEXTURES.remove(this);
     }
 
     @Override
@@ -144,7 +137,7 @@ public class GLTexture implements GlTex {
     }
 
     @Override
-    public void unBind() {
+    public void unbind() {
         GLTextureSystem.getGlController().bindTexture(0);
     }
 

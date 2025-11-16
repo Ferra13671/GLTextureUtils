@@ -1,14 +1,15 @@
 package com.ferra13671.gltextureutils.loader;
 
+import com.ferra13671.gltextureutils.builder.GLGifBuilder;
 import com.ferra13671.gltextureutils.builder.GLGifInfo;
-import com.ferra13671.gltextureutils.gif.DecompileMode;
+import com.ferra13671.gltextureutils.TextureFiltering;
+import com.ferra13671.gltextureutils.TextureWrapping;
 
-/**
- * @author Ferra13671
- * @LastUpdate 1.6
- */
+public abstract class GifLoader<T> {
 
-public interface GifLoader {
+    public abstract GLGifInfo load(T path, TextureFiltering filtering, TextureWrapping wrapping) throws Exception;
 
-    GLGifInfo load(DecompileMode decompileMode) throws Exception;
+    public GLGifBuilder<T> createGifBuilder() {
+        return new GLGifBuilder<>(this);
+    }
 }

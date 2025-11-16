@@ -3,11 +3,6 @@ package com.ferra13671.gltextureutils.controller;
 import org.lwjgl.opengl.GL11;
 import java.nio.ByteBuffer;
 
-/**
- * @author Ferra13671
- * @LastUpdate 1.6.3
- */
-
 public class DefaultGlController implements GlController {
     public static final int GL_RGB = 6407;
     public static final int GL_RGBA = 6408;
