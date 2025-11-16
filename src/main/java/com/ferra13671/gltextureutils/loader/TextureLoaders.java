@@ -7,6 +7,7 @@ import org.lwjgl.system.MemoryUtil;
 import com.ferra13671.gltextureutils.ColorMode;
 import com.ferra13671.gltextureutils.TextureFiltering;
 import com.ferra13671.gltextureutils.TextureWrapping;
+import com.ferra13671.gltextureutils.GLTexture;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
@@ -15,6 +16,12 @@ import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * A class that stores all the basic texture loaders.
+ *
+ * @see TextureLoader
+ * @see GLTexture
+ */
 public final class TextureLoaders {
     public static TextureLoader<InputStream> INPUT_STREAM = new TextureLoader<InputStream>() {
         @Override

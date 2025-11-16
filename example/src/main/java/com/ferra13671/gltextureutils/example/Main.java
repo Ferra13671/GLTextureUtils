@@ -3,7 +3,7 @@ package com.ferra13671.gltextureutils.example;
 import com.ferra13671.gltextureutils.*;
 import com.ferra13671.gltextureutils.builder.GLGifInfo;
 import com.ferra13671.gltextureutils.builder.GLTextureInfo;
-import com.ferra13671.gltextureutils.controller.DefaultGlController;
+import com.ferra13671.gltextureutils.controller.DefaultGLController;
 import com.ferra13671.gltextureutils.loader.GifLoader;
 import com.ferra13671.gltextureutils.loader.GifLoaders;
 import com.ferra13671.gltextureutils.loader.TextureLoader;
@@ -52,7 +52,7 @@ public class Main {
         createWindow();
 
         //Sets the current controller for interaction with important OpenGL methods.
-        GLTextureSystem.setGlController(new DefaultGlController());
+        GLTextureSystem.setGlController(new DefaultGLController());
 
         //Create a texture with the image 'testTexture.jpg'
         testTexture = exampleTextureLoader.createTextureBuilder()
@@ -95,7 +95,7 @@ public class Main {
         drawTexture(0, 0, 200, 200, 0, 0, 1, 1, testTexture);
 
         //Draw our gif to the screen
-        drawTexture( 150, 200, 350, 400, 0, 0, 1, 1, testGif);
+        drawTexture(150, 200, 350, 400, 0, 0, 1, 1, testGif);
     }
 
     public static void drawTexture(float x1, float y1, float x2, float y2, float texPosX1, float texPosY1, float texPosX2, float texPosY2, GlTex texture) {

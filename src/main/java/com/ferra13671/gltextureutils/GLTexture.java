@@ -1,6 +1,6 @@
 package com.ferra13671.gltextureutils;
 
-import com.ferra13671.gltextureutils.controller.GlController;
+import com.ferra13671.gltextureutils.controller.GLController;
 import com.ferra13671.gltextureutils.builder.GLTextureInfo;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -10,24 +10,43 @@ import java.util.Random;
 
 import static org.lwjgl.stb.STBImage.nstbi_image_free;
 
+/**
+ * The basic texture implementation in GLTextureUtils.
+ */
 public class GLTexture implements GlTex {
+    /** Texture id in OpenGL. **/
     private int texId;
 
+    /** Texture name. **/
     protected final String name;
+    /** Texture width. **/
     protected int width;
+    /** Texture height. **/
     protected int height;
 
+    /** Texture filtering. **/
     protected TextureFiltering filtering;
+    /** Texture wrapping mode. **/
     protected TextureWrapping wrapping;
+    /** Pixels color mode. **/
     protected ColorMode colorMode;
 
+    /**
+     * @param name texture name.
+     */
     private GLTexture(String name) {
         this.name = name;
         GLTextureSystem.ALL_TEXTURES.add(this);
     }
 
+    /**
+     * Loads a texture using GLTextureInfo.
+     *
+     * @param glTextureInfo texture information.
+     * @return loaded texture.
+     */
     private GLTexture create(GLTextureInfo glTextureInfo) {
-        GlController controller = GLTextureSystem.getGlController();
+        GLController controller = GLTextureSystem.getGlController();
 
         controller.run(() -> {
             texId = controller.genTexId();
@@ -64,20 +83,29 @@ public class GLTexture implements GlTex {
         return this;
     }
 
-    private void applyFiltering(GlController controller, TextureFiltering textureFiltering) {
+    private void applyFiltering(GLController controller, TextureFiltering textureFiltering) {
         controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, textureFiltering.id);
         controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, textureFiltering.id);
         this.filtering = textureFiltering;
     }
 
-    private void applyWrapping(GlController controller, TextureWrapping textureWrapping) {
+    private void applyWrapping(GLController controller, TextureWrapping textureWrapping) {
         controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, textureWrapping.id);
         controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, textureWrapping.id);
         this.wrapping = textureWrapping;
     }
 
+    /**
+     * Creates a new texture from a specific area of pixels of the current texture.
+     *
+     * @param u1 initial position of the region along x (from 0 to 1).
+     * @param v1 initial position of the region along y (from 0 to 1).
+     * @param u2 final position of the region along x (from 0 to 1).
+     * @param v2 final position of the region along y (from 0 to 1).
+     * @return new texture from a specific area of pixels of the current texture.
+     */
     public GLTexture subTexture(float u1, float v1, float u2, float v2) {
-        GlController controller = GLTextureSystem.getGlController();
+        GLController controller = GLTextureSystem.getGlController();
         GLTexture texture = new GLTexture(name.concat(String.format("_sub_%s", new Random().nextInt())));
 
         controller.run(() -> {
@@ -90,17 +118,17 @@ public class GLTexture implements GlTex {
             if (GL30.glCheckFramebufferStatus(GL30.GL_FRAMEBUFFER) != GL30.GL_FRAMEBUFFER_COMPLETE)
                 throw new RuntimeException(String.format("An error occurred while creating FrameBuffer for subtexture '%s'.", texture.getName()));
 
-            texture.width = (int) ((u2 - u1) * width);
-            texture.height = (int) ((v2 - v1) * height);
+            texture.width = (int) ((u2 - u1) * this.width);
+            texture.height = (int) ((v2 - v1) * this.height);
 
             controller.bindTexture(texture.texId);
             controller.texParameter(GL11.GL_TEXTURE_2D, 33085, 0);
             controller.texParameter(GL11.GL_TEXTURE_2D, 33082, 0);
             controller.texParameter(GL11.GL_TEXTURE_2D, 33083, 0);
             controller.texParameter(GL11.GL_TEXTURE_2D, 34049, 0.0F);
-            texture.applyFiltering(controller, filtering);
-            texture.applyWrapping(controller, wrapping);
-            texture.colorMode = colorMode;
+            texture.applyFiltering(controller, this.filtering);
+            texture.applyWrapping(controller, this.wrapping);
+            texture.colorMode = this.colorMode;
 
             controller.texImage2D(GL11.GL_TEXTURE_2D, 0, texture.colorMode.glId, texture.width, texture.height, 0, texture.colorMode.glId, 5121, null);
             controller.pixelStore(GL11.GL_UNPACK_ROW_LENGTH, 0);
@@ -110,7 +138,7 @@ public class GLTexture implements GlTex {
 
             GL11.glCopyTexSubImage2D(GL11.GL_TEXTURE_2D, 0,
                     0, 0,
-                    (int) (u1 * width), (int) (v1 * height),
+                    (int) (u1 * this.width), (int) (v1 * this.height),
                     texture.width, texture.height);
 
             controller.bindTexture(0);
@@ -121,10 +149,6 @@ public class GLTexture implements GlTex {
         return texture;
     }
 
-    /**
-     * Removes the com.ferra13671.TextureUtils.texture from video memory and returns null.
-     * Use this for times when the com.ferra13671.TextureUtils.texture is no longer needed to free up some video memory.
-     */
     @Override
     public void delete() {
         GLTextureSystem.getGlController().deleteTexture(texId);
@@ -142,12 +166,12 @@ public class GLTexture implements GlTex {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     @Override
     public int getHeight() {
-        return height;
+        return this.height;
     }
 
     @Override
@@ -157,9 +181,16 @@ public class GLTexture implements GlTex {
 
     @Override
     public int getWidth() {
-        return width;
+        return this.width;
     }
 
+    /**
+     * Creates a new texture.
+     *
+     * @param name texture name.
+     * @param glTextureInfo texture information.
+     * @return new texture,
+     */
     public static GLTexture of(String name, GLTextureInfo glTextureInfo) {
         return new GLTexture(name).create(glTextureInfo);
     }

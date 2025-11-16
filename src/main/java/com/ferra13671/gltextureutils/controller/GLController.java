@@ -2,7 +2,10 @@ package com.ferra13671.gltextureutils.controller;
 
 import java.nio.ByteBuffer;
 
-public interface GlController {
+/**
+ * GLController allows you to override the execution of standard OpenGL methods, thereby adapting to various other utilities that may have their own implementations of these methods.
+ */
+public interface GLController {
 
     void run(Runnable runnable);
 

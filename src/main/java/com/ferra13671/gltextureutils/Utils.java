@@ -13,6 +13,9 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.util.function.Consumer;
 
+/**
+ * Class with utilities used in GLTextureUtils.
+ */
 public class Utils {
 
     public static void checkNode(Node node, Consumer<Node> consumer) {

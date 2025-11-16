@@ -1,5 +1,6 @@
 package com.ferra13671.gltextureutils.loader;
 
+import com.ferra13671.gltextureutils.GLGif;
 import com.ferra13671.gltextureutils.TextureFiltering;
 import com.ferra13671.gltextureutils.TextureWrapping;
 import com.ferra13671.gltextureutils.builder.GLGifInfo;
@@ -7,6 +8,12 @@ import com.ferra13671.gltextureutils.builder.GLGifInfo;
 import java.io.InputStream;
 import java.net.URI;
 
+/**
+ * A class that stores all the basic gif loaders.
+ *
+ * @see GifLoader
+ * @see GLGif
+ */
 public final class GifLoaders {
     public static final GifLoader<InputStream> INPUT_STREAM = new GifLoader<InputStream>() {
         @Override

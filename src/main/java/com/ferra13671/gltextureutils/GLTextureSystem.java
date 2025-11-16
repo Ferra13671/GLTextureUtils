@@ -1,30 +1,60 @@
 package com.ferra13671.gltextureutils;
 
-import com.ferra13671.gltextureutils.controller.DefaultGlController;
-import com.ferra13671.gltextureutils.controller.GlController;
+import com.ferra13671.gltextureutils.controller.DefaultGLController;
+import com.ferra13671.gltextureutils.controller.GLController;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Main class GLTextureSystem.
+ */
 public class GLTextureSystem {
+    /**
+     * List of all textures and gifs created in GLTextureUtils.
+     *
+     * @see GLTexture
+     * @see GLGif
+     */
     protected static final List<GlTex> ALL_TEXTURES = new CopyOnWriteArrayList<>();
     /**
-     * If you are using lwjgl that is not 3.3.3, or if you are using a modified
-     * version of lwjgl (as in Minecraft), then some methods may be slightly different,
-     * so that each time not to transfer the utility to different versions was made {@link GlController},
-     * with which you can customize what the code will do in this or that method. The default
-     * is {@link DefaultGlController}, which does exactly what the default code should do.
+     * Controller allows you to change the call of standard OpenGL methods.
+     * <p>
+     * The default is {@link DefaultGLController}, which calls standard OpenGL methods.
+     *
+     * @see GLController
+     * @see DefaultGLController
      */
-    private static GlController glController = new DefaultGlController();
+    private static GLController glController = new DefaultGLController();
 
-    public static void setGlController(GlController controller) {
+    /**
+     * Sets a new glController.
+     *
+     * @param controller new glController.
+     *
+     * @see GLController
+     */
+    public static void setGlController(GLController controller) {
         glController = controller;
     }
 
-    public static GlController getGlController() {
+    /**
+     * Returns the current glController.
+     *
+     * @return current glController.
+     *
+     * @see GLController
+     */
+    public static GLController getGlController() {
         return glController;
     }
 
+    /**
+     * Closes all textures and gifs created during the entire operation of GLTextureSystem.
+     *
+     * @see GLTexture
+     * @see GLGif
+     */
     public static void close() {
         ALL_TEXTURES.forEach(GlTex::delete);
         ALL_TEXTURES.clear();

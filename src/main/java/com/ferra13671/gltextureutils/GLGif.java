@@ -16,14 +16,27 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * A texture implementation as a GIF. GLGif stores multiple subtextures as frames.
+ * <p>
+ * When the GIF is rendered, the frames are automatically updated.
+ */
 public class GLGif implements GlTex {
+    /** List of all frames in gif. **/
     protected final List<GLGifFrame> frames = new ArrayList<>();
 
+    /** Current gif frame. **/
     protected GLGifFrame currentFrame;
+    /** Current gif frame id. **/
     protected int currentFrameId = 0;
 
+    /** The time gif frame was last updated. **/
     protected long lastUpdateTime = System.currentTimeMillis();
 
+    /**
+     * @param name gif name.
+     * @param info gif information.
+     */
     public GLGif(String name, GLGifInfo info) {
         try {
             ImageInputStream stream = ImageIO.createImageInputStream(info.getInputStream());

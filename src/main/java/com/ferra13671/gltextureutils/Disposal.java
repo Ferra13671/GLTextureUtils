@@ -8,7 +8,13 @@ import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
+/**
+ * Gif disposal method.
+ */
 public enum Disposal {
+    /**
+     * The frame is a complement to the previous frame, so the finished frame will be a combination of this and the previous frame.
+     */
     None((prevImage, imageData) -> {
         BufferedImage bufferedImage = new BufferedImage(prevImage.getWidth(), prevImage.getHeight(), prevImage.getType());
         Graphics2D graphics = bufferedImage.createGraphics();
@@ -19,6 +25,9 @@ public enum Disposal {
 
         return bufferedImage;
     }, frames -> {}),
+    /**
+     * An empty frame will be added after this frame.
+     */
     ToBackground((frames, imageData) -> imageData.getRight(), frames -> {
         GLGifFrame frame = frames.get(frames.size() - 1);
         frames.add(new GLGifFrame(
@@ -32,6 +41,9 @@ public enum Disposal {
                 0
         ));
     }),
+    /**
+     * After this frame, the previous frame will be added.
+     */
     ToPrevious((frames, imageData) -> imageData.getRight(), frames -> {
         GLGifFrame prevFrame = frames.get(frames.size() - 2);
         frames.add(new GLGifFrame(prevFrame.getTexture(), prevFrame.getImage(), 0));

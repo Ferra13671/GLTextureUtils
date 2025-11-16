@@ -3,7 +3,10 @@ package com.ferra13671.gltextureutils.controller;
 import org.lwjgl.opengl.GL11;
 import java.nio.ByteBuffer;
 
-public class DefaultGlController implements GlController {
+/**
+ * The basic implementation of GLController, in which all standard OpenGL methods are not overridden.
+ */
+public class DefaultGLController implements GLController {
     public static final int GL_RGB = 6407;
     public static final int GL_RGBA = 6408;
 
