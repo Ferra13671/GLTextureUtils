@@ -5,8 +5,6 @@ import com.ferra13671.gltextureutils.Utils;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryUtil;
 import com.ferra13671.gltextureutils.ColorMode;
-import com.ferra13671.gltextureutils.TextureFiltering;
-import com.ferra13671.gltextureutils.TextureWrapping;
 import com.ferra13671.gltextureutils.GLTexture;
 
 import java.awt.image.BufferedImage;
@@ -25,7 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public final class TextureLoaders {
     public static TextureLoader<InputStream> INPUT_STREAM = new TextureLoader<InputStream>() {
         @Override
-        public GLTextureInfo load(InputStream path, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) throws Exception {
+        public GLTextureInfo load(InputStream path, ColorMode colorMode) throws Exception {
             ByteBuffer buffer = Utils.readStream(path);
             buffer.rewind();
 
@@ -37,26 +35,26 @@ public final class TextureLoaders {
                 ByteBuffer byteBuffer = STBImage.stbi_load_from_memory(buffer, xBuffer, yBuffer, channelsBuffer, colorMode == ColorMode.RGBA ? 4 : 3);
 
                 if (byteBuffer != null)
-                    glTextureInfo.set(new GLTextureInfo(byteBuffer, xBuffer.get(0), yBuffer.get(0), colorMode, filtering, wrapping, true));
+                    glTextureInfo.set(new GLTextureInfo(byteBuffer, xBuffer.get(0), yBuffer.get(0), true));
             });
             return glTextureInfo.get();
         }
     };
     public static TextureLoader<FileEntry> FILE_ENTRY = new TextureLoader<FileEntry>() {
         @Override
-        public GLTextureInfo load(FileEntry path, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) throws Exception {
-            return INPUT_STREAM.load(path.getPathMode().streamCreateFunction.apply(path.getPath()), colorMode, filtering, wrapping);
+        public GLTextureInfo load(FileEntry path, ColorMode colorMode) throws Exception {
+            return INPUT_STREAM.load(path.getPathMode().streamCreateFunction.apply(path.getPath()), colorMode);
         }
     };
     public static TextureLoader<URL> URL = new TextureLoader<java.net.URL>() {
         @Override
-        public GLTextureInfo load(URL path, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) throws Exception {
-            return INPUT_STREAM.load(path.openStream(), colorMode, filtering, wrapping);
+        public GLTextureInfo load(URL path, ColorMode colorMode) throws Exception {
+            return INPUT_STREAM.load(path.openStream(), colorMode);
         }
     };
     public static TextureLoader<BufferedImage> BUFFERED_IMAGE = new TextureLoader<BufferedImage>() {
         @Override
-        public GLTextureInfo load(BufferedImage path, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) throws Exception {
+        public GLTextureInfo load(BufferedImage path, ColorMode colorMode) {
             GLTextureInfo glTextureInfo;
 
             int[] pixels = new int[path.getWidth() * path.getHeight()];
@@ -75,7 +73,7 @@ public final class TextureLoaders {
             }
             byteBuffer.flip();
 
-            glTextureInfo = new GLTextureInfo(byteBuffer, path.getWidth(), path.getHeight(), colorMode, filtering, wrapping, false);
+            glTextureInfo = new GLTextureInfo(byteBuffer, path.getWidth(), path.getHeight(), false);
 
             return glTextureInfo;
         }

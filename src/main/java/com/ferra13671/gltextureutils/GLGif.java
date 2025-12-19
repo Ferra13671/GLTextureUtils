@@ -101,7 +101,7 @@ public class GLGif implements GlTex {
                             new GLGifFrame(
                                     TextureLoaders.BUFFERED_IMAGE.createTextureBuilder()
                                         .name(name.concat("-frame" + numFrames))
-                                        .path(image)
+                                        .info(image)
                                         .filtering(info.getFiltering())
                                         .wrapping(info.getWrapping())
                                         .build(),

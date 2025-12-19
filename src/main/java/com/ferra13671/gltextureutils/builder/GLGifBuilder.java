@@ -41,12 +41,12 @@ public class GLGifBuilder<T> {
     }
 
     /**
-     * Sets the path to gif.
+     * Sets the path to load gif information.
      *
      * @param path path to gif.
      * @return gif builder.
      */
-    public GLGifBuilder<T> path(T path) {
+    public GLGifBuilder<T> info(T path) {
         this.path = path;
         return this;
     }

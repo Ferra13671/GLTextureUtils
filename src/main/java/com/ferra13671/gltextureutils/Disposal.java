@@ -33,7 +33,7 @@ public enum Disposal {
         frames.add(new GLGifFrame(
                 TextureLoaders.BUFFERED_IMAGE.createTextureBuilder()
                         .name(frame.getTexture().getName() + "-extra")
-                        .path(new BufferedImage(frame.getTexture().getWidth(), frame.getTexture().getHeight(), frame.getImage().getType()))
+                        .info(new BufferedImage(frame.getTexture().getWidth(), frame.getTexture().getHeight(), frame.getImage().getType()))
                         .filtering(frame.getTexture().filtering)
                         .wrapping(frame.getTexture().wrapping)
                         .build(),

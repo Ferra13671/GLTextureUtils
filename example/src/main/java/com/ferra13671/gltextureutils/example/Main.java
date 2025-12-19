@@ -32,8 +32,8 @@ public class Main {
      */
     public static final TextureLoader<String> exampleTextureLoader = new TextureLoader<String>() {
         @Override
-        public GLTextureInfo load(String path, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) throws Exception {
-            return TextureLoaders.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path), colorMode, filtering, wrapping);
+        public GLTextureInfo load(String path, ColorMode colorMode) throws Exception {
+            return TextureLoaders.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path), colorMode);
         }
     };
     /*
@@ -57,7 +57,7 @@ public class Main {
         //Create a texture with the image 'testTexture.jpg'
         testTexture = exampleTextureLoader.createTextureBuilder()
                 .name("TestTexture")
-                .path("testTexture.jpg")
+                .info("testTexture.jpg")
                 .filtering(TextureFiltering.SMOOTH)
                 .wrapping(TextureWrapping.DEFAULT)
                 .build();
@@ -65,7 +65,7 @@ public class Main {
         //Create a gif
         testGif = exampleGifLoader.createGifBuilder()
                 .name("TestGif")
-                .path("testGif.gif")
+                .info("testGif.gif")
                 .filtering(TextureFiltering.SMOOTH)
                 .wrapping(TextureWrapping.DEFAULT)
                 .build();

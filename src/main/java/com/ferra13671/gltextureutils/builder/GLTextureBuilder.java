@@ -16,8 +16,8 @@ import com.ferra13671.gltextureutils.loader.TextureLoader;
 public class GLTextureBuilder<T> {
     /** Texture name. **/
     private String name = null;
-    /** Path to image. **/
-    private T path = null;
+    /** Image info. **/
+    private GLTextureInfo info = null;
     /** Texture loader. **/
     private final TextureLoader<T> loader;
     /** Pixels color mode. **/
@@ -48,15 +48,57 @@ public class GLTextureBuilder<T> {
     }
 
     /**
-     * Sets the path to image.
+     * Sets the path to load image information.
      *
      * @param path path to image.
      * @return texture builder.
      */
-    public GLTextureBuilder<T> path(T path) {
-        this.path = path;
+    public GLTextureBuilder<T> info(T path) {
+        return info(path, this.colorMode);
+    }
+
+    /**
+     * Sets the path to load image information.
+     *
+     * @param path path to image.
+     * @param colorMode pixels color mode.
+     * @return texture builder.
+     */
+    public GLTextureBuilder<T> info(T path, ColorMode colorMode) {
+        try {
+            this.info = this.loader.load(path, colorMode);
+            this.colorMode = colorMode;
+        } catch (Exception e) {
+            throw new UnsupportedOperationException(e);
+        }
         return this;
     }
+
+    /**
+     * Sets the path to load image information.
+     *
+     * @param width texture width;
+     * @param height texture height;
+     * @return texture builder.
+     */
+    public GLTextureBuilder<T> info(int width, int height) {
+        return info(width, height, this.colorMode);
+    }
+
+    /**
+     * Sets the path to load image information.
+     *
+     * @param width texture width;
+     * @param height texture height;
+     * @param colorMode pixels color mode.
+     * @return texture builder.
+     */
+    public GLTextureBuilder<T> info(int width, int height, ColorMode colorMode) {
+        this.info = new GLTextureInfo(null, width, height, false);
+        this.colorMode = colorMode;
+        return this;
+    }
+
 
     /**
      * Sets the pixels color mode.
@@ -101,24 +143,24 @@ public class GLTextureBuilder<T> {
     public GLTexture build() {
         try {
             checkArguments();
-            return GLTexture.of(name, loader.load(path, colorMode, filtering, wrapping));
+            return GLTexture.of(this.name, this.colorMode, this.filtering, this.wrapping, this.info);
         } catch (Exception e) {
             throw new UnsupportedOperationException(e);
         }
     }
 
     private void checkArguments() {
-        if (name == null)
+        if (this.name == null)
             throw new IllegalArgumentException("Name cannot be null.");
-        if (loader == null)
-            throw new IllegalArgumentException(String.format("Loader in texture '%s' cannot be null.", name));
-        if (path == null)
-            throw new IllegalArgumentException(String.format("Path in texture '%s' cannot be null.", name));
-        if (colorMode == null)
-            throw new IllegalArgumentException(String.format("ColorMode in texture '%s' cannot be null.", name));
-        if (filtering == null)
-            throw new IllegalArgumentException(String.format("TextureFiltering in texture '%s' cannot be null.", name));
-        if (wrapping == null)
-            throw new IllegalArgumentException(String.format("TextureWrapping in texture '%s' cannot be null.", name));
+        if (this.loader == null)
+            throw new IllegalArgumentException(String.format("Loader in texture '%s' cannot be null.", this.name));
+        if (this.info == null)
+            throw new IllegalArgumentException(String.format("Texture information in texture '%s' cannot be null", this.name));
+        if (this.colorMode == null)
+            throw new IllegalArgumentException(String.format("ColorMode in texture '%s' cannot be null.", this.name));
+        if (this.filtering == null)
+            throw new IllegalArgumentException(String.format("TextureFiltering in texture '%s' cannot be null.", this.name));
+        if (this.wrapping == null)
+            throw new IllegalArgumentException(String.format("TextureWrapping in texture '%s' cannot be null.", this.name));
     }
 }

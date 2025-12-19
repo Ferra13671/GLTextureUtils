@@ -7,8 +7,6 @@ import java.nio.ByteBuffer;
  * The basic implementation of GLController, in which all standard OpenGL methods are not overridden.
  */
 public class DefaultGLController implements GLController {
-    public static final int GL_RGB = 6407;
-    public static final int GL_RGBA = 6408;
 
     @Override
     public void run(Runnable runnable) {
