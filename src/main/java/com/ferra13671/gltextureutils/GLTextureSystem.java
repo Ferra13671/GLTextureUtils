@@ -16,7 +16,7 @@ public class GLTextureSystem {
      * @see GLTexture
      * @see GLGif
      */
-    protected static final List<GlTex> ALL_TEXTURES = new CopyOnWriteArrayList<>();
+    private static final List<GlTex> ALL_TEXTURES = new CopyOnWriteArrayList<>();
     /**
      * Controller allows you to change the call of standard OpenGL methods.
      * <p>
@@ -36,6 +36,24 @@ public class GLTextureSystem {
      */
     public static void setGlController(GLController controller) {
         glController = controller;
+    }
+
+    /**
+     * Adds texture to list of all textures and gifs.
+     *
+     * @param texture texture.
+     */
+    public static void addTexture(GlTex texture) {
+        ALL_TEXTURES.add(texture);
+    }
+
+    /**
+     * Removes texture from list of all textures and gifs.
+     *
+     * @param texture texture.
+     */
+    public static void removeTexture(GlTex texture) {
+        ALL_TEXTURES.remove(texture);
     }
 
     /**

@@ -42,7 +42,7 @@ public class GLTexture implements GlTex {
         this.colorMode = colorMode;
         this.filtering = filtering;
         this.wrapping = wrapping;
-        GLTextureSystem.ALL_TEXTURES.add(this);
+        GLTextureSystem.addTexture(this);
     }
 
     /**
@@ -157,7 +157,7 @@ public class GLTexture implements GlTex {
     @Override
     public void delete() {
         GLTextureSystem.getGlController().deleteTexture(texId);
-        GLTextureSystem.ALL_TEXTURES.remove(this);
+        GLTextureSystem.removeTexture(this);
     }
 
     @Override
