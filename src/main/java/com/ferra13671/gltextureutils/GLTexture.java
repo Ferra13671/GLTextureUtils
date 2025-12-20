@@ -15,7 +15,7 @@ import static org.lwjgl.stb.STBImage.nstbi_image_free;
  */
 public class GLTexture implements GlTex {
     /** Texture id in OpenGL. **/
-    private int texId;
+    protected int texId;
 
     /** Texture name. **/
     protected final String name;
@@ -37,7 +37,7 @@ public class GLTexture implements GlTex {
      * @param filtering texture filtering mode.
      * @param wrapping texture wrapping mode.
      */
-    private GLTexture(String name, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) {
+    protected GLTexture(String name, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) {
         this.name = name;
         this.colorMode = colorMode;
         this.filtering = filtering;
