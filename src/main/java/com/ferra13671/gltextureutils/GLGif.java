@@ -138,6 +138,16 @@ public class GLGif implements GlTex {
     }
 
     @Override
+    public TextureFiltering getFiltering() {
+        return this.currentFrame.getTexture().getFiltering();
+    }
+
+    @Override
+    public TextureWrapping getWrapping() {
+        return this.currentFrame.getTexture().getWrapping();
+    }
+
+    @Override
     public int getWidth() {
         return this.currentFrame.getTexture().getWidth();
     }

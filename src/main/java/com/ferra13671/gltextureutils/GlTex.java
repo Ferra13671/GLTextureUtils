@@ -23,6 +23,10 @@ public interface GlTex {
      */
     void unbind();
 
+    TextureFiltering getFiltering();
+
+    TextureWrapping getWrapping();
+
     /**
      * Returns the width of the texture.
      *

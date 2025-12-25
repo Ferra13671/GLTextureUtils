@@ -170,6 +170,16 @@ public class GLTexture implements GlTex {
         GLTextureSystem.getGlController().bindTexture(0);
     }
 
+    @Override
+    public TextureFiltering getFiltering() {
+        return this.filtering;
+    }
+
+    @Override
+    public TextureWrapping getWrapping() {
+        return this.wrapping;
+    }
+
     public String getName() {
         return this.name;
     }
