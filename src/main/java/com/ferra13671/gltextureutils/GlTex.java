@@ -23,9 +23,33 @@ public interface GlTex {
      */
     void unbind();
 
+    /**
+     * Returns the texture filtering.
+     *
+     * @return texture filtering.
+     */
     TextureFiltering getFiltering();
 
+    /**
+     * Sets the texture filtering.
+     *
+     * @param textureFiltering texture filtering.
+     */
+    void setFiltering(TextureFiltering textureFiltering);
+
+    /**
+     * Returns the texture wrapping.
+     *
+     * @return texture wrapping.
+     */
     TextureWrapping getWrapping();
+
+    /**
+     * Sets the texture wrapping.
+     *
+     * @param textureWrapping texture wrapping.
+     */
+    void setWrapping(TextureWrapping textureWrapping);
 
     /**
      * Returns the width of the texture.

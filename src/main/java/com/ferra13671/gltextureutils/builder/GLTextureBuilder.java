@@ -143,7 +143,13 @@ public class GLTextureBuilder<T> {
     public GLTexture build() {
         try {
             checkArguments();
-            return GLTexture.of(this.name, this.colorMode, this.filtering, this.wrapping, this.info);
+
+            GLTexture texture = GLTexture.of(this.name, this.colorMode, this.info);
+
+            texture.setFiltering(this.filtering);
+            texture.setWrapping(this.wrapping);
+
+            return texture;
         } catch (Exception e) {
             throw new UnsupportedOperationException(e);
         }
@@ -158,9 +164,5 @@ public class GLTextureBuilder<T> {
             throw new IllegalArgumentException(String.format("Texture information in texture '%s' cannot be null", this.name));
         if (this.colorMode == null)
             throw new IllegalArgumentException(String.format("ColorMode in texture '%s' cannot be null.", this.name));
-        if (this.filtering == null)
-            throw new IllegalArgumentException(String.format("TextureFiltering in texture '%s' cannot be null.", this.name));
-        if (this.wrapping == null)
-            throw new IllegalArgumentException(String.format("TextureWrapping in texture '%s' cannot be null.", this.name));
     }
 }

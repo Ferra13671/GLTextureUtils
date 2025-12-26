@@ -1,7 +1,6 @@
 package com.ferra13671.gltextureutils.example;
 
 import com.ferra13671.gltextureutils.*;
-import com.ferra13671.gltextureutils.builder.GLGifInfo;
 import com.ferra13671.gltextureutils.builder.GLTextureInfo;
 import com.ferra13671.gltextureutils.controller.DefaultGLController;
 import com.ferra13671.gltextureutils.loader.GifLoader;
@@ -13,6 +12,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
+import java.io.InputStream;
 import java.nio.FloatBuffer;
 
 public class Main {
@@ -42,8 +42,8 @@ public class Main {
      */
     public static final GifLoader<String> exampleGifLoader = new GifLoader<String>() {
         @Override
-        public GLGifInfo load(String path, TextureFiltering filtering, TextureWrapping wrapping) throws Exception {
-            return GifLoaders.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path), filtering, wrapping);
+        public InputStream load(String path) throws Exception {
+            return GifLoaders.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path));
         }
     };
 

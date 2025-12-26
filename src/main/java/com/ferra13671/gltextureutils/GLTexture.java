@@ -25,23 +25,19 @@ public class GLTexture implements GlTex {
     protected int height;
 
     /** Texture filtering. **/
-    protected TextureFiltering filtering;
+    protected TextureFiltering filtering = null;
     /** Texture wrapping mode. **/
-    protected TextureWrapping wrapping;
+    protected TextureWrapping wrapping = null;
     /** Pixels color mode. **/
     protected ColorMode colorMode;
 
     /**
      * @param name texture name.
      * @param colorMode pixels color mode.
-     * @param filtering texture filtering mode.
-     * @param wrapping texture wrapping mode.
      */
-    protected GLTexture(String name, ColorMode colorMode, TextureFiltering filtering, TextureWrapping wrapping) {
+    protected GLTexture(String name, ColorMode colorMode) {
         this.name = name;
         this.colorMode = colorMode;
-        this.filtering = filtering;
-        this.wrapping = wrapping;
         GLTextureSystem.addTexture(this);
     }
 
@@ -62,8 +58,6 @@ public class GLTexture implements GlTex {
             controller.texParameter(GL11.GL_TEXTURE_2D, 33082, 0);
             controller.texParameter(GL11.GL_TEXTURE_2D, 33083, 0);
             controller.texParameter(GL11.GL_TEXTURE_2D, 34049, 0.0F);
-            applyFiltering(controller);
-            applyWrapping(controller);
 
             this.width = glTextureInfo.getWidth();
             this.height = glTextureInfo.getHeight();
@@ -91,16 +85,6 @@ public class GLTexture implements GlTex {
         return this;
     }
 
-    private void applyFiltering(GLController controller) {
-        controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, this.filtering.id);
-        controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, this.filtering.id);
-    }
-
-    private void applyWrapping(GLController controller) {
-        controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, this.wrapping.id);
-        controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, this.wrapping.id);
-    }
-
     /**
      * Creates a new texture from a specific area of pixels of the current texture.
      *
@@ -112,7 +96,7 @@ public class GLTexture implements GlTex {
      */
     public GLTexture subTexture(float u1, float v1, float u2, float v2) {
         GLController controller = GLTextureSystem.getGlController();
-        GLTexture texture = new GLTexture(this.name.concat(String.format("_sub_%s", new Random().nextInt())), this.colorMode, this.filtering, this.wrapping);
+        GLTexture texture = new GLTexture(this.name.concat(String.format("_sub_%s", new Random().nextInt())), this.colorMode);
 
         controller.run(() -> {
             texture.texId = controller.genTexId();
@@ -132,8 +116,8 @@ public class GLTexture implements GlTex {
             controller.texParameter(GL11.GL_TEXTURE_2D, 33082, 0);
             controller.texParameter(GL11.GL_TEXTURE_2D, 33083, 0);
             controller.texParameter(GL11.GL_TEXTURE_2D, 34049, 0.0F);
-            texture.applyFiltering(controller);
-            texture.applyWrapping(controller);
+            texture.setFiltering(this.filtering);
+            texture.setWrapping(this.wrapping);
 
             controller.texImage2D(GL11.GL_TEXTURE_2D, 0, texture.colorMode.internalId, texture.width, texture.height, 0, texture.colorMode.externalId, 5121, null);
             controller.pixelStore(GL11.GL_UNPACK_ROW_LENGTH, 0);
@@ -176,8 +160,38 @@ public class GLTexture implements GlTex {
     }
 
     @Override
+    public void setFiltering(TextureFiltering filtering) {
+        GLController controller = GLTextureSystem.getGlController();
+
+        if (filtering != null) {
+            controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filtering.id);
+            controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filtering.id);
+        } else if (this.filtering != null) {
+            controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, TextureFiltering.DEFAULT.id);
+            controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, TextureFiltering.DEFAULT.id);
+        }
+
+        this.filtering = filtering;
+    }
+
+    @Override
     public TextureWrapping getWrapping() {
         return this.wrapping;
+    }
+
+    @Override
+    public void setWrapping(TextureWrapping wrapping) {
+        GLController controller = GLTextureSystem.getGlController();
+
+        if (wrapping != null) {
+            controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, wrapping.id);
+            controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, wrapping.id);
+        } else if (this.wrapping != null) {
+            controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, TextureWrapping.DEFAULT.id);
+            controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, TextureWrapping.DEFAULT.id);
+        }
+
+        this.wrapping = wrapping;
     }
 
     public String getName() {
@@ -204,12 +218,10 @@ public class GLTexture implements GlTex {
      *
      * @param name texture name.
      * @param colorMode pixels color mode.
-     * @param textureFiltering texture filtering mode.
-     * @param textureWrapping texture wrapping mode.
      * @param glTextureInfo texture information.
      * @return new texture,
      */
-    public static GLTexture of(String name, ColorMode colorMode, TextureFiltering textureFiltering, TextureWrapping textureWrapping, GLTextureInfo glTextureInfo) {
-        return new GLTexture(name, colorMode, textureFiltering, textureWrapping).create(glTextureInfo);
+    public static GLTexture of(String name, ColorMode colorMode, GLTextureInfo glTextureInfo) {
+        return new GLTexture(name, colorMode).create(glTextureInfo);
     }
 }

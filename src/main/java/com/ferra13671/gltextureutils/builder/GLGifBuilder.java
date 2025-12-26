@@ -83,7 +83,13 @@ public class GLGifBuilder<T> {
     public GLGif build() {
         try {
             checkArguments();
-            return new GLGif(this.name, this.loader.load(this.path, this.filtering, this.wrapping));
+
+            GLGif glGif = new GLGif(this.name, this.loader.load(this.path));
+
+            glGif.setFiltering(this.filtering);
+            glGif.setWrapping(this.wrapping);
+
+            return glGif;
         } catch (Exception e) {
             throw new UnsupportedOperationException(e);
         }
@@ -96,9 +102,5 @@ public class GLGifBuilder<T> {
             throw new IllegalArgumentException(String.format("Loader in texture '%s' cannot be null.", name));
         if (path == null)
             throw new IllegalArgumentException(String.format("Path in texture '%s' cannot be null.", name));
-        if (filtering == null)
-            throw new IllegalArgumentException(String.format("TextureFiltering in texture '%s' cannot be null.", name));
-        if (wrapping == null)
-            throw new IllegalArgumentException(String.format("TextureWrapping in texture '%s' cannot be null.", name));
     }
 }

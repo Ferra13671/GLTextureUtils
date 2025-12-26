@@ -1,6 +1,5 @@
 package com.ferra13671.gltextureutils;
 
-import com.ferra13671.gltextureutils.builder.GLGifInfo;
 import com.ferra13671.gltextureutils.loader.TextureLoaders;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -10,6 +9,7 @@ import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,11 +35,11 @@ public class GLGif implements GlTex {
 
     /**
      * @param name gif name.
-     * @param info gif information.
+     * @param inputStream gif InputStream.
      */
-    public GLGif(String name, GLGifInfo info) {
+    public GLGif(String name, InputStream inputStream) {
         try {
-            ImageInputStream stream = ImageIO.createImageInputStream(info.getInputStream());
+            ImageInputStream stream = ImageIO.createImageInputStream(inputStream);
             Iterator<ImageReader> readers = ImageIO.getImageReaders(stream);
 
             if (readers.hasNext()) {
@@ -102,8 +102,6 @@ public class GLGif implements GlTex {
                                     TextureLoaders.BUFFERED_IMAGE.createTextureBuilder()
                                         .name(name.concat("-frame" + numFrames))
                                         .info(image)
-                                        .filtering(info.getFiltering())
-                                        .wrapping(info.getWrapping())
                                         .build(),
                                     image,
                                     delay.get())
@@ -143,8 +141,20 @@ public class GLGif implements GlTex {
     }
 
     @Override
+    public void setFiltering(TextureFiltering textureFiltering) {
+        for (GLGifFrame frame : this.frames)
+            frame.getTexture().setFiltering(textureFiltering);
+    }
+
+    @Override
     public TextureWrapping getWrapping() {
         return this.currentFrame.getTexture().getWrapping();
+    }
+
+    @Override
+    public void setWrapping(TextureWrapping textureWrapping) {
+        for (GLGifFrame frame : this.frames)
+            frame.getTexture().setWrapping(textureWrapping);
     }
 
     @Override
