@@ -164,9 +164,11 @@ public class GLTexture implements GlTex {
         GLController controller = GLTextureSystem.getGlController();
 
         if (filtering != null) {
+            bind();
             controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filtering.id);
             controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filtering.id);
         } else if (this.filtering != null) {
+            bind();
             controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, TextureFiltering.DEFAULT.id);
             controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, TextureFiltering.DEFAULT.id);
         }
@@ -184,9 +186,11 @@ public class GLTexture implements GlTex {
         GLController controller = GLTextureSystem.getGlController();
 
         if (wrapping != null) {
+            bind();
             controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, wrapping.id);
             controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, wrapping.id);
         } else if (this.wrapping != null) {
+            bind();
             controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, TextureWrapping.DEFAULT.id);
             controller.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, TextureWrapping.DEFAULT.id);
         }
