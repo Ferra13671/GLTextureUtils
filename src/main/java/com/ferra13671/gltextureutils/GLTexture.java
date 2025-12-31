@@ -3,7 +3,6 @@ package com.ferra13671.gltextureutils;
 import com.ferra13671.gltextureutils.controller.GLController;
 import com.ferra13671.gltextureutils.builder.GLTextureInfo;
 import lombok.Getter;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.system.MemoryUtil;
@@ -147,7 +146,7 @@ public class GLTexture implements GlTex {
         GLController controller = GLTextureSystem.getGlController();
 
         controller.run(() -> {
-            ByteBuffer byteBuffer = BufferUtils.createByteBuffer(texture.getWidth() * texture.getHeight() * texture.getColorMode().components);
+            ByteBuffer byteBuffer = MemoryUtil.memAlloc(texture.getWidth() * texture.getHeight() * texture.getColorMode().components);
 
             controller.bindTexture(texture.getTexId());
             controller.getTexImage(GL11.GL_TEXTURE_2D, 0, texture.getColorMode().externalId, GL11.GL_UNSIGNED_BYTE, byteBuffer);
