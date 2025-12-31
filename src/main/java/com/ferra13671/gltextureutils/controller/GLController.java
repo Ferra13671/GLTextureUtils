@@ -19,9 +19,13 @@ public interface GLController {
 
     void texParameter(int target, int pname, float param);
 
-    void texImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, ByteBuffer pixels);
+    void texImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, ByteBuffer pixels);
 
-    void texSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, long pixels);
+    void texSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int type, long pixels);
+
+    void copyTexSubImage2D(int target, int level, int xOffset, int yOffset, int x, int y, int width, int height);
+
+    void getTexImage(int tex, int level, int externalFormat, int type, ByteBuffer pixels);
 
     void pixelStore(int pname, int param);
 }

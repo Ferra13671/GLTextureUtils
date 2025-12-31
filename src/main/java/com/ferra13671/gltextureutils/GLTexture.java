@@ -115,7 +115,7 @@ public class GLTexture implements GlTex {
             controller.texImage2D(GL11.GL_TEXTURE_2D, 0, texture.colorMode.internalId, texture.width, texture.height, 0, texture.colorMode.externalId, GL11.GL_UNSIGNED_BYTE, null);
             prepareDefaultPixelStore(controller);
 
-            GL11.glCopyTexSubImage2D(
+            controller.copyTexSubImage2D(
                     GL11.GL_TEXTURE_2D,
                     0,
                     0,
@@ -148,7 +148,7 @@ public class GLTexture implements GlTex {
             ByteBuffer byteBuffer = BufferUtils.createByteBuffer(texture.getWidth() * texture.getHeight() * texture.getColorMode().components);
 
             controller.bindTexture(texture.getTexId());
-            GL11.glGetTexImage(GL11.GL_TEXTURE_2D, 0, texture.getColorMode().externalId, GL11.GL_UNSIGNED_BYTE, byteBuffer);
+            controller.getTexImage(GL11.GL_TEXTURE_2D, 0, texture.getColorMode().externalId, GL11.GL_UNSIGNED_BYTE, byteBuffer);
             byteBuffer.flip();
 
             controller.bindTexture(getTexId());

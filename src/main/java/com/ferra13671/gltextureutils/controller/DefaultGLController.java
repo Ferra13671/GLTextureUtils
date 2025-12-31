@@ -39,13 +39,23 @@ public class DefaultGLController implements GLController {
     }
 
     @Override
-    public void texImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, ByteBuffer pixels) {
-        GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+    public void texImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, ByteBuffer pixels) {
+        GL11.glTexImage2D(target, level, internalFormat, width, height, border, format, type, pixels);
     }
 
     @Override
-    public void texSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, long pixels) {
-        GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
+    public void texSubImage2D(int target, int level, int xOffset, int yOffset, int width, int height, int format, int type, long pixels) {
+        GL11.glTexSubImage2D(target, level, xOffset, yOffset, width, height, format, type, pixels);
+    }
+
+    @Override
+    public void copyTexSubImage2D(int target, int level, int xOffset, int yOffset, int x, int y, int width, int height) {
+        GL11.glCopyTexSubImage2D(target, level, xOffset, yOffset, x, y, width, height);
+    }
+
+    @Override
+    public void getTexImage(int tex, int level, int externalFormat, int type, ByteBuffer pixels) {
+        GL11.glGetTexImage(tex, level, externalFormat, type, pixels);
     }
 
     @Override
