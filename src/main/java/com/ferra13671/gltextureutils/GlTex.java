@@ -45,6 +45,13 @@ public interface GlTex {
     TextureWrapping getWrapping();
 
     /**
+     * Returns the texture color mode.
+     *
+     * @return texture color mode.
+     */
+    ColorMode getColorMode();
+
+    /**
      * Sets the texture wrapping.
      *
      * @param textureWrapping texture wrapping.

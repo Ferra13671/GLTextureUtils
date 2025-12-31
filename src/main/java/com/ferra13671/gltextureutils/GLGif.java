@@ -158,6 +158,11 @@ public class GLGif implements GlTex {
     }
 
     @Override
+    public ColorMode getColorMode() {
+        return this.currentFrame.getTexture().getColorMode();
+    }
+
+    @Override
     public int getWidth() {
         return this.currentFrame.getTexture().getWidth();
     }
