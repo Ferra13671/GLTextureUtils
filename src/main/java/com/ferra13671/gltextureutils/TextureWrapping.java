@@ -1,5 +1,6 @@
 package com.ferra13671.gltextureutils;
 
+import lombok.AllArgsConstructor;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
@@ -9,6 +10,7 @@ import org.lwjgl.opengl.GL14;
  *
  * @see GLTexture
  */
+@AllArgsConstructor
 public enum TextureWrapping {
     /**
      * A mode in which values outside the boundaries will return the color of the pixel closest to the boundary.
@@ -24,8 +26,4 @@ public enum TextureWrapping {
     MIRROR_REPEAT(GL14.GL_MIRRORED_REPEAT);
 
     public final int id;
-
-    TextureWrapping(int id) {
-        this.id = id;
-    }
 }

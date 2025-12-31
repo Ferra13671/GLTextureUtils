@@ -1,27 +1,13 @@
 package com.ferra13671.gltextureutils;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class Pair<A, B> {
     private A left;
     private B right;
-
-    public Pair(A left, B right) {
-        this.left = left;
-        this.right = right;
-    }
-
-    public A getLeft() {
-        return left;
-    }
-
-    public void setLeft(A left) {
-        this.left = left;
-    }
-
-    public B getRight() {
-        return right;
-    }
-
-    public void setRight(B right) {
-        this.right = right;
-    }
 }

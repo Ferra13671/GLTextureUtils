@@ -1,5 +1,6 @@
 package com.ferra13671.gltextureutils;
 
+import lombok.AllArgsConstructor;
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -7,6 +8,7 @@ import org.lwjgl.opengl.GL11;
  *
  * @see GLTexture
  */
+@AllArgsConstructor
 public enum TextureFiltering {
     /**
      * A texture filtering mode in which the color of a floating-point coordinate will be taken as the color of the closest pixel to the coordinate.
@@ -23,8 +25,4 @@ public enum TextureFiltering {
 
     /** Texture filtering mode id in OpenGL. **/
     public final int id;
-
-    TextureFiltering(int id) {
-        this.id = id;
-    }
 }

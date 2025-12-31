@@ -1,6 +1,7 @@
 package com.ferra13671.gltextureutils;
 
 import com.ferra13671.gltextureutils.loader.TextureLoaders;
+import lombok.AllArgsConstructor;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,6 +12,7 @@ import java.util.function.Consumer;
 /**
  * Gif disposal method.
  */
+@AllArgsConstructor
 public enum Disposal {
     /**
      * The frame is a complement to the previous frame, so the finished frame will be a combination of this and the previous frame.
@@ -51,9 +53,4 @@ public enum Disposal {
 
     public final BiFunction<BufferedImage, Pair<int[], BufferedImage>, BufferedImage> disposalFunction;
     public final Consumer<List<GLGifFrame>> extraConsumer;
-
-    Disposal(BiFunction<BufferedImage, Pair<int[], BufferedImage>, BufferedImage> disposalFunction, Consumer<List<GLGifFrame>> extraConsumer) {
-        this.disposalFunction = disposalFunction;
-        this.extraConsumer = extraConsumer;
-    }
 }

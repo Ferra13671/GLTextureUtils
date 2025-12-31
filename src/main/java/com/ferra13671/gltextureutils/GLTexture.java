@@ -2,6 +2,7 @@ package com.ferra13671.gltextureutils;
 
 import com.ferra13671.gltextureutils.controller.GLController;
 import com.ferra13671.gltextureutils.builder.GLTextureInfo;
+import lombok.Getter;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -20,6 +21,7 @@ public class GLTexture implements GlTex {
     protected int texId;
 
     /** Texture name. **/
+    @Getter
     protected final String name;
     /** Texture width. **/
     protected int width;
@@ -241,10 +243,6 @@ public class GLTexture implements GlTex {
     @Override
     public ColorMode getColorMode() {
         return this.colorMode;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     @Override

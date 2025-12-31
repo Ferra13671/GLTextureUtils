@@ -5,12 +5,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.function.Function;
 import com.ferra13671.gltextureutils.loader.FileEntry;
+import lombok.AllArgsConstructor;
 
 /**
  * The mode of the path used in FileEntry.
  *
  * @see FileEntry
  */
+@AllArgsConstructor
 public enum PathMode {
     /**
      * The mode in which the path is treated as a path in a jar file.
@@ -30,8 +32,4 @@ public enum PathMode {
     });
 
     public final Function<String, InputStream> streamCreateFunction;
-
-    PathMode(Function<String, InputStream> streamCreateFunction) {
-        this.streamCreateFunction = streamCreateFunction;
-    }
 }

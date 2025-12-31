@@ -6,7 +6,7 @@ plugins {
 project.ext.lwjglVersion = "3.3.3"
 
 group = 'com.ferra13671'
-version = '1.7.3.1'
+version = '1.7.4'
 
 java {
     toolchain {
@@ -25,7 +25,8 @@ dependencies {
 
     compileOnly platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
-
+    compileOnly("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
 
     compileOnly "org.lwjgl:lwjgl"
     compileOnly "org.lwjgl:lwjgl-opengl"

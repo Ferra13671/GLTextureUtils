@@ -2,6 +2,8 @@ package com.ferra13671.gltextureutils;
 
 import com.ferra13671.gltextureutils.controller.DefaultGLController;
 import com.ferra13671.gltextureutils.controller.GLController;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -25,18 +27,9 @@ public class GLTextureSystem {
      * @see GLController
      * @see DefaultGLController
      */
+    @Setter
+    @Getter
     private static GLController glController = new DefaultGLController();
-
-    /**
-     * Sets a new glController.
-     *
-     * @param controller new glController.
-     *
-     * @see GLController
-     */
-    public static void setGlController(GLController controller) {
-        glController = controller;
-    }
 
     /**
      * Adds texture to list of all textures and gifs.
@@ -54,17 +47,6 @@ public class GLTextureSystem {
      */
     public static void removeTexture(GlTex texture) {
         ALL_TEXTURES.remove(texture);
-    }
-
-    /**
-     * Returns the current glController.
-     *
-     * @return current glController.
-     *
-     * @see GLController
-     */
-    public static GLController getGlController() {
-        return glController;
     }
 
     /**
