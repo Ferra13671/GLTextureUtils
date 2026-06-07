@@ -30,7 +30,7 @@ public class GifLoaders {
     public final GifLoader<FileEntry> FILE_ENTRY = new GifLoader<>() {
         @Override
         public InputStream load(FileEntry path) {
-            return path.getPathMode().streamCreateFunction.apply(path.getPath());
+            return path.pathMode().streamCreateFunction.apply(path.path());
         }
     };
 }

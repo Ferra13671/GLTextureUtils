@@ -46,7 +46,7 @@ public class TextureLoaders {
     public final TextureLoader<FileEntry> FILE_ENTRY = new TextureLoader<>() {
         @Override
         public GLTextureInfo load(FileEntry path, ColorMode colorMode) throws Exception {
-            return INPUT_STREAM.load(path.getPathMode().streamCreateFunction.apply(path.getPath()), colorMode);
+            return INPUT_STREAM.load(path.pathMode().streamCreateFunction.apply(path.path()), colorMode);
         }
     };
     public final TextureLoader<URL> URL = new TextureLoader<>() {
