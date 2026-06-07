@@ -1,51 +1,41 @@
 package com.ferra13671.gltextureutils.example;
 
 import com.ferra13671.gltextureutils.*;
-import com.ferra13671.gltextureutils.builder.GLTextureInfo;
 import com.ferra13671.gltextureutils.controller.DefaultGLController;
 import com.ferra13671.gltextureutils.loader.GifLoader;
 import com.ferra13671.gltextureutils.loader.TextureLoader;
+import lombok.experimental.UtilityClass;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryUtil;
 
-import java.io.InputStream;
 import java.nio.FloatBuffer;
 
+@UtilityClass
 public class Main {
 
-    private static final FloatBuffer customTextureCords = MemoryUtil.memAlloc(8 * 4).asFloatBuffer();
-    private static final FloatBuffer rectVertex = MemoryUtil.memAlloc(8 * 4).asFloatBuffer();
+    private final FloatBuffer customTextureCords = MemoryUtil.memAlloc(8 * 4).asFloatBuffer();
+    private final FloatBuffer rectVertex = MemoryUtil.memAlloc(8 * 4).asFloatBuffer();
 
-    public static long window;
-    public static final int width = 500, height = 500;
+    public long window;
+    public final int width = 500, height = 500;
 
-    public static GLTexture testTexture;
-    public static GLGif testGif;
+    public GLTexture testTexture;
+    public GLGif testGif;
 
     /*
     Custom texture data loader.
     This example loader should not be used, as loading data within a JAR file is already implemented in the TextureLoaders.FILE_ENTRY loader.
      */
-    public static final TextureLoader<String> exampleTextureLoader = new TextureLoader<String>() {
-        @Override
-        public GLTextureInfo load(String path, ColorMode colorMode) throws Exception {
-            return TextureLoader.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path), colorMode);
-        }
-    };
+    public final TextureLoader<String> exampleTextureLoader = (path, colorMode) -> TextureLoader.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path), colorMode);
     /*
     Custom gif data loader.
     This example loader should not be used, as loading data within a JAR file is already implemented in the GifLoaders.FILE_ENTRY loader.
      */
-    public static final GifLoader<String> exampleGifLoader = new GifLoader<String>() {
-        @Override
-        public InputStream load(String path) throws Exception {
-            return GifLoader.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path));
-        }
-    };
+    public final GifLoader<String> exampleGifLoader = path -> GifLoader.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path));
 
-    public static void main(String[] args) {
+    public void main(String[] args) {
         //Create a test window
         createWindow();
 
@@ -82,7 +72,7 @@ public class Main {
         GLFW.glfwDestroyWindow(window);
     }
 
-    public static void render() {
+    public void render() {
         //Setup matrix
         GL11.glViewport(0,0, width, height);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
@@ -96,7 +86,7 @@ public class Main {
         drawTexture(150, 200, 350, 400, 0, 0, 1, 1, testGif);
     }
 
-    public static void drawTexture(float x1, float y1, float x2, float y2, float texPosX1, float texPosY1, float texPosX2, float texPosY2, GlTex texture) {
+    public void drawTexture(float x1, float y1, float x2, float y2, float texPosX1, float texPosY1, float texPosX2, float texPosY2, GlTex texture) {
         rectVertex.put(new float[]{x1,y1, x2,y1, x2,y2, x1,y2}).position(0);
         customTextureCords.put(new float[]{texPosX1, texPosY1,   texPosX2, texPosY1,   texPosX2, texPosY2,   texPosX1, texPosY2}).position(0);
 
@@ -121,7 +111,7 @@ public class Main {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
     }
 
-    private static void createWindow() {
+    private void createWindow() {
         GLFW.glfwInit();
         window = GLFW.glfwCreateWindow(width, height, "Example", 0, 0);
 

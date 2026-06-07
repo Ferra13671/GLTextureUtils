@@ -34,6 +34,9 @@ repositories {
 dependencies {
     implementation rootProject
 
+    compileOnly("org.projectlombok:lombok:${project.lombok_version}")
+    annotationProcessor("org.projectlombok:lombok:${project.lombok_version}")
+
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
     implementation "org.lwjgl:lwjgl"

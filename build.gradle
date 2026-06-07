@@ -21,8 +21,8 @@ repositories {
 dependencies {
     compileOnly platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
-    compileOnly("org.projectlombok:lombok:1.18.42")
-    annotationProcessor("org.projectlombok:lombok:1.18.42")
+    compileOnly("org.projectlombok:lombok:${project.lombok_version}")
+    annotationProcessor("org.projectlombok:lombok:${project.lombok_version}")
 
     compileOnly "org.lwjgl:lwjgl"
     compileOnly "org.lwjgl:lwjgl-opengl"
