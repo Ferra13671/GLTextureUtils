@@ -13,25 +13,10 @@ import java.net.URI;
  *
  * @see GLGif
  */
-public abstract class GifLoader<T> {
-    public static final GifLoader<InputStream> INPUT_STREAM = new GifLoader<>() {
-        @Override
-        public InputStream load(InputStream path) {
-            return path;
-        }
-    };
-    public static final GifLoader<URI> URI = new GifLoader<>() {
-        @Override
-        public InputStream load(URI path) throws Exception {
-            return path.toURL().openStream();
-        }
-    };
-    public static final GifLoader<FileEntry> FILE_ENTRY = new GifLoader<>() {
-        @Override
-        public InputStream load(FileEntry path) {
-            return path.pathMode().streamCreateFunction.apply(path.path());
-        }
-    };
+public interface GifLoader<T> {
+    GifLoader<InputStream> INPUT_STREAM = path -> path;
+    GifLoader<URI> URI = path -> path.toURL().openStream();
+    GifLoader<FileEntry> FILE_ENTRY = path -> path.pathMode().streamCreateFunction.apply(path.path());
 
     /**
      * Loads various data into the gif information.
@@ -40,7 +25,7 @@ public abstract class GifLoader<T> {
      * @return gif InputStream.
      * @throws Exception various errors that may occur during loading.
      */
-    public abstract InputStream load(T path) throws Exception;
+    InputStream load(T path) throws Exception;
 
     /**
      * Creates a new gif builder that will use this gif loader.
@@ -49,7 +34,7 @@ public abstract class GifLoader<T> {
      *
      * @see GLGifBuilder
      */
-    public GLGifBuilder<T> createGifBuilder() {
+    default GLGifBuilder<T> createGifBuilder() {
         return new GLGifBuilder<>(this);
     }
 }
