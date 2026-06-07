@@ -10,4 +10,5 @@ public record ColorMode(int externalFormatId, int internalFormatId, int pixelSiz
     public static final ColorMode RGB = new ColorMode(GL11.GL_RGB, GL11.GL_RGB8, 3);
     public static final ColorMode RGBA = new ColorMode(GL11.GL_RGBA, GL11.GL_RGBA8, 4);
     public static final ColorMode DEPTH = new ColorMode(GL30.GL_DEPTH_COMPONENT, GL30.GL_DEPTH_COMPONENT32, 1);
+    public static final ColorMode DEPTH_AND_STENCIL = new ColorMode(GL30.GL_DEPTH_STENCIL, GL30.GL_DEPTH24_STENCIL8, 1);
 }
