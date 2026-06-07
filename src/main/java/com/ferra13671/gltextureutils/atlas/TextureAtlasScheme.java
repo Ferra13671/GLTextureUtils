@@ -2,15 +2,8 @@ package com.ferra13671.gltextureutils.atlas;
 
 import com.ferra13671.gltextureutils.GLTexture;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.util.HashMap;
 
-//TODO Make a record
-@Getter
-@AllArgsConstructor
-public class TextureAtlasScheme {
-    private final int textureWidth;
-    private final int textureHeight;
-    private final HashMap<GLTexture, TexturePos> poses;
+public record TextureAtlasScheme(int textureWidth, int textureHeight, HashMap<GLTexture, TexturePos> poses) {
 }
