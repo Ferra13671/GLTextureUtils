@@ -4,7 +4,6 @@ import com.ferra13671.gltextureutils.*;
 import com.ferra13671.gltextureutils.builder.GLTextureInfo;
 import com.ferra13671.gltextureutils.controller.DefaultGLController;
 import com.ferra13671.gltextureutils.loader.GifLoader;
-import com.ferra13671.gltextureutils.loader.GifLoaders;
 import com.ferra13671.gltextureutils.loader.TextureLoader;
 import com.ferra13671.gltextureutils.loader.TextureLoaders;
 import org.lwjgl.glfw.GLFW;
@@ -43,7 +42,7 @@ public class Main {
     public static final GifLoader<String> exampleGifLoader = new GifLoader<String>() {
         @Override
         public InputStream load(String path) throws Exception {
-            return GifLoaders.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path));
+            return GifLoader.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path));
         }
     };
 
