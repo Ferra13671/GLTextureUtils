@@ -1,6 +1,6 @@
 package com.ferra13671.gltextureutils;
 
-import com.ferra13671.gltextureutils.loader.TextureLoaders;
+import com.ferra13671.gltextureutils.loader.TextureLoader;
 import lombok.AllArgsConstructor;
 
 import java.awt.*;
@@ -33,7 +33,7 @@ public enum Disposal {
     ToBackground((frames, imageData) -> imageData.getRight(), frames -> {
         GLGifFrame frame = frames.get(frames.size() - 1);
         frames.add(new GLGifFrame(
-                TextureLoaders.BUFFERED_IMAGE.createTextureBuilder()
+                TextureLoader.BUFFERED_IMAGE.createTextureBuilder()
                         .name(frame.texture().getName() + "-extra")
                         .info(new BufferedImage(frame.texture().getWidth(), frame.texture().getHeight(), frame.image().getType()))
                         .filtering(frame.texture().filtering)

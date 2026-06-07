@@ -1,6 +1,6 @@
 package com.ferra13671.gltextureutils;
 
-import com.ferra13671.gltextureutils.loader.TextureLoaders;
+import com.ferra13671.gltextureutils.loader.TextureLoader;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
@@ -99,7 +99,7 @@ public class GLGif implements GlTex {
 
                     this.frames.add(
                             new GLGifFrame(
-                                    TextureLoaders.BUFFERED_IMAGE.createTextureBuilder()
+                                    TextureLoader.BUFFERED_IMAGE.createTextureBuilder()
                                         .name(name.concat("-frame" + numFrames))
                                         .info(image)
                                         .build(),

@@ -1,7 +1,7 @@
 package com.ferra13671.gltextureutils.atlas;
 
 import com.ferra13671.gltextureutils.*;
-import com.ferra13671.gltextureutils.loader.TextureLoaders;
+import com.ferra13671.gltextureutils.loader.TextureLoader;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,7 +29,7 @@ public class TextureAtlas implements GlTex {
 
         TextureAtlasScheme scheme = calculateAtlasScheme(textures);
 
-        this.texture = TextureLoaders.INPUT_STREAM.createTextureBuilder()
+        this.texture = TextureLoader.INPUT_STREAM.createTextureBuilder()
                 .name(name)
                 .info(scheme.textureWidth(), scheme.textureHeight())
                 .build();

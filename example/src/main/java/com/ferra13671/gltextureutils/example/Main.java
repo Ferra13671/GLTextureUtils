@@ -5,7 +5,6 @@ import com.ferra13671.gltextureutils.builder.GLTextureInfo;
 import com.ferra13671.gltextureutils.controller.DefaultGLController;
 import com.ferra13671.gltextureutils.loader.GifLoader;
 import com.ferra13671.gltextureutils.loader.TextureLoader;
-import com.ferra13671.gltextureutils.loader.TextureLoaders;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -32,7 +31,7 @@ public class Main {
     public static final TextureLoader<String> exampleTextureLoader = new TextureLoader<String>() {
         @Override
         public GLTextureInfo load(String path, ColorMode colorMode) throws Exception {
-            return TextureLoaders.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path), colorMode);
+            return TextureLoader.INPUT_STREAM.load(Main.class.getClassLoader().getResourceAsStream(path), colorMode);
         }
     };
     /*
