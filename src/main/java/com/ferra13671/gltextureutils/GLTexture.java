@@ -60,9 +60,9 @@ public class GLTexture implements GlTex {
         GLController controller = GLTextureSystem.getGlController();
 
         controller.run(() -> {
-            texId = controller.genTexId();
+            this.texId = controller.genTexId();
 
-            controller.bindTexture(texId);
+            controller.bindTexture(this.texId);
             prepareDefaultTextureParameters(controller);
 
             this.width = glTextureInfo.width();
@@ -187,7 +187,7 @@ public class GLTexture implements GlTex {
 
     @Override
     public void delete() {
-        GLTextureSystem.getGlController().deleteTexture(texId);
+        GLTextureSystem.getGlController().deleteTexture(this.texId);
         GLTextureSystem.removeTexture(this);
     }
 

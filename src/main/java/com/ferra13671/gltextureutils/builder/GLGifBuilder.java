@@ -96,11 +96,11 @@ public class GLGifBuilder<T> {
     }
 
     private void checkArguments() {
-        if (name == null)
+        if (this.name == null)
             throw new IllegalArgumentException("Name cannot be null.");
-        if (loader == null)
-            throw new IllegalArgumentException(String.format("Loader in texture '%s' cannot be null.", name));
-        if (path == null)
-            throw new IllegalArgumentException(String.format("Path in texture '%s' cannot be null.", name));
+        if (this.loader == null)
+            throw new IllegalArgumentException(String.format("Loader in texture '%s' cannot be null.", this.name));
+        if (this.path == null)
+            throw new IllegalArgumentException(String.format("Path in texture '%s' cannot be null.", this.name));
     }
 }
