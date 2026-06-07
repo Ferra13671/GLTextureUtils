@@ -1,22 +1,14 @@
 package com.ferra13671.gltextureutils;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.awt.image.BufferedImage;
 
 /**
  * An object representing a gif frame.
  *
+ * @param texture Gif frame texture.
+ * @param image   Gif frame image.
+ * @param delay   Gif frame update delay.
  * @see GLGif
  */
-@Getter
-@AllArgsConstructor
-public class GLGifFrame {
-    /** Gif frame texture. **/
-    private final GLTexture texture;
-    /** Gif frame image. **/
-    private final BufferedImage image;
-    /** Gif frame update delay. **/
-    private final int delay;
+public record GLGifFrame(GLTexture texture, BufferedImage image, int delay) {
 }

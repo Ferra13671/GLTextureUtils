@@ -34,12 +34,12 @@ public enum Disposal {
         GLGifFrame frame = frames.get(frames.size() - 1);
         frames.add(new GLGifFrame(
                 TextureLoaders.BUFFERED_IMAGE.createTextureBuilder()
-                        .name(frame.getTexture().getName() + "-extra")
-                        .info(new BufferedImage(frame.getTexture().getWidth(), frame.getTexture().getHeight(), frame.getImage().getType()))
-                        .filtering(frame.getTexture().filtering)
-                        .wrapping(frame.getTexture().wrapping)
+                        .name(frame.texture().getName() + "-extra")
+                        .info(new BufferedImage(frame.texture().getWidth(), frame.texture().getHeight(), frame.image().getType()))
+                        .filtering(frame.texture().filtering)
+                        .wrapping(frame.texture().wrapping)
                         .build(),
-                frame.getImage(),
+                frame.image(),
                 0
         ));
     }),
@@ -48,7 +48,7 @@ public enum Disposal {
      */
     ToPrevious((frames, imageData) -> imageData.getRight(), frames -> {
         GLGifFrame prevFrame = frames.get(frames.size() - 2);
-        frames.add(new GLGifFrame(prevFrame.getTexture(), prevFrame.getImage(), 0));
+        frames.add(new GLGifFrame(prevFrame.texture(), prevFrame.image(), 0));
     });
 
     public final BiFunction<BufferedImage, Pair<int[], BufferedImage>, BufferedImage> disposalFunction;

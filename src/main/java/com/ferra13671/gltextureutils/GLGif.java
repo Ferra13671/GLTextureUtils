@@ -122,7 +122,7 @@ public class GLGif implements GlTex {
     @Override
     public void delete() {
         for (GLGifFrame frame : this.frames)
-            frame.getTexture().delete();
+            frame.texture().delete();
     }
 
     @Override
@@ -137,54 +137,54 @@ public class GLGif implements GlTex {
 
     @Override
     public TextureFiltering getFiltering() {
-        return this.currentFrame.getTexture().getFiltering();
+        return this.currentFrame.texture().getFiltering();
     }
 
     @Override
     public void setFiltering(TextureFiltering textureFiltering) {
         for (GLGifFrame frame : this.frames)
-            frame.getTexture().setFiltering(textureFiltering);
+            frame.texture().setFiltering(textureFiltering);
     }
 
     @Override
     public TextureWrapping getWrapping() {
-        return this.currentFrame.getTexture().getWrapping();
+        return this.currentFrame.texture().getWrapping();
     }
 
     @Override
     public void setWrapping(TextureWrapping textureWrapping) {
         for (GLGifFrame frame : this.frames)
-            frame.getTexture().setWrapping(textureWrapping);
+            frame.texture().setWrapping(textureWrapping);
     }
 
     @Override
     public ColorMode getColorMode() {
-        return this.currentFrame.getTexture().getColorMode();
+        return this.currentFrame.texture().getColorMode();
     }
 
     @Override
     public int getWidth() {
-        return this.currentFrame.getTexture().getWidth();
+        return this.currentFrame.texture().getWidth();
     }
 
     @Override
     public int getHeight() {
-        return this.currentFrame.getTexture().getHeight();
+        return this.currentFrame.texture().getHeight();
     }
 
     @Override
     public int getTexId() {
         updateFrame();
-        return this.currentFrame.getTexture().getTexId();
+        return this.currentFrame.texture().getTexId();
     }
 
     private void updateFrame() {
-        while (this.lastUpdateTime + this.currentFrame.getDelay() <= System.currentTimeMillis())
+        while (this.lastUpdateTime + this.currentFrame.delay() <= System.currentTimeMillis())
             setCurrentFrame(this.currentFrameId++ % (this.frames.size() - 1));
     }
 
     private void setCurrentFrame(int frameId) {
-        this.lastUpdateTime = this.lastUpdateTime + this.currentFrame.getDelay();
+        this.lastUpdateTime = this.lastUpdateTime + this.currentFrame.delay();
         this.currentFrame = this.frames.get(frameId);
     }
 }
