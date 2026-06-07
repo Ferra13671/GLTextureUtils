@@ -2,6 +2,7 @@ package com.ferra13671.gltextureutils.loader;
 
 import com.ferra13671.gltextureutils.builder.GLTextureInfo;
 import com.ferra13671.gltextureutils.Utils;
+import lombok.experimental.UtilityClass;
 import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryUtil;
 import com.ferra13671.gltextureutils.ColorMode;
@@ -20,8 +21,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * @see TextureLoader
  * @see GLTexture
  */
-public final class TextureLoaders {
-    public static TextureLoader<InputStream> INPUT_STREAM = new TextureLoader<InputStream>() {
+//TODO move to TextureLoader
+@UtilityClass
+public class TextureLoaders {
+    public final TextureLoader<InputStream> INPUT_STREAM = new TextureLoader<>() {
         @Override
         public GLTextureInfo load(InputStream path, ColorMode colorMode) throws Exception {
             ByteBuffer buffer = Utils.readStream(path);
@@ -40,19 +43,19 @@ public final class TextureLoaders {
             return glTextureInfo.get();
         }
     };
-    public static TextureLoader<FileEntry> FILE_ENTRY = new TextureLoader<FileEntry>() {
+    public final TextureLoader<FileEntry> FILE_ENTRY = new TextureLoader<>() {
         @Override
         public GLTextureInfo load(FileEntry path, ColorMode colorMode) throws Exception {
             return INPUT_STREAM.load(path.getPathMode().streamCreateFunction.apply(path.getPath()), colorMode);
         }
     };
-    public static TextureLoader<URL> URL = new TextureLoader<java.net.URL>() {
+    public final TextureLoader<URL> URL = new TextureLoader<>() {
         @Override
         public GLTextureInfo load(URL path, ColorMode colorMode) throws Exception {
             return INPUT_STREAM.load(path.openStream(), colorMode);
         }
     };
-    public static TextureLoader<BufferedImage> BUFFERED_IMAGE = new TextureLoader<BufferedImage>() {
+    public final TextureLoader<BufferedImage> BUFFERED_IMAGE = new TextureLoader<>() {
         @Override
         public GLTextureInfo load(BufferedImage path, ColorMode colorMode) {
             GLTextureInfo glTextureInfo;

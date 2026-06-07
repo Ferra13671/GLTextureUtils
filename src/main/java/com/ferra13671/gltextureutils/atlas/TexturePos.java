@@ -6,6 +6,7 @@ import lombok.Getter;
 /**
  * An object that stores the 2D position of a texture.
  */
+//TODO Make a record
 @Getter
 @AllArgsConstructor
 public class TexturePos {

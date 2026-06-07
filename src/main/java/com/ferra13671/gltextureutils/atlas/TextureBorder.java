@@ -6,6 +6,7 @@ import lombok.Getter;
 /**
  * An object that stores the UV coordinates of a texture.
  */
+//TODO Make a record
 @Getter
 @AllArgsConstructor
 public class TextureBorder {

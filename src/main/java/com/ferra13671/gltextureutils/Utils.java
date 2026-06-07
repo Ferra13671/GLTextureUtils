@@ -1,5 +1,6 @@
 package com.ferra13671.gltextureutils;
 
+import lombok.experimental.UtilityClass;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 import org.w3c.dom.Node;
@@ -16,9 +17,10 @@ import java.util.function.Consumer;
 /**
  * Class with utilities used in GLTextureUtils.
  */
+@UtilityClass
 public class Utils {
 
-    public static void checkNode(Node node, Consumer<Node> consumer) {
+    public void checkNode(Node node, Consumer<Node> consumer) {
         consumer.accept(node);
 
         NodeList list = node.getChildNodes();
@@ -27,7 +29,7 @@ public class Utils {
             consumer.accept(list.item(i));
     }
 
-    public static ByteBuffer readStream(InputStream stream) throws IOException {
+    public ByteBuffer readStream(InputStream stream) throws IOException {
         ReadableByteChannel rbChannel = Channels.newChannel(stream);
         if (rbChannel instanceof SeekableByteChannel) {
             SeekableByteChannel sbChannel = (SeekableByteChannel) rbChannel;
@@ -36,7 +38,7 @@ public class Utils {
             return readChannel(rbChannel, 8192);
     }
 
-    public static ByteBuffer readChannel(ReadableByteChannel channel, int bufSize) throws IOException {
+    public ByteBuffer readChannel(ReadableByteChannel channel, int bufSize) throws IOException {
         ByteBuffer byteBuffer = MemoryUtil.memAlloc(bufSize);
 
         try {
@@ -52,7 +54,7 @@ public class Utils {
         }
     }
 
-    public static void tryGenerate(ByteBuffer buffer, InputStream stream, Consumer<MemoryStack> consumer) throws IOException {
+    public void tryGenerate(ByteBuffer buffer, InputStream stream, Consumer<MemoryStack> consumer) throws IOException {
         try {
             MemoryStack memoryStack = MemoryStack.stackPush();
             try {
@@ -79,19 +81,19 @@ public class Utils {
         }
     }
 
-    public static byte getRed(int rgba) {
+    public byte getRed(int rgba) {
         return (byte) ((rgba >> 16) & 0xFF);
     }
 
-    public static byte getGreen(int rgba) {
+    public byte getGreen(int rgba) {
         return (byte) ((rgba >> 8) & 0xFF);
     }
 
-    public static byte getBlue(int rgba) {
+    public byte getBlue(int rgba) {
         return (byte) (rgba & 0xFF);
     }
 
-    public static byte getAlpha(int rgba) {
+    public byte getAlpha(int rgba) {
         return (byte) ((rgba >> 24) & 0xFF);
     }
 }

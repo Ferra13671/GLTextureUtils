@@ -17,21 +17,27 @@ import static org.lwjgl.stb.STBImage.nstbi_image_free;
  */
 public class GLTexture implements GlTex {
     /** Texture id in OpenGL. **/
+    @Getter
     protected int texId;
 
     /** Texture name. **/
     @Getter
     protected final String name;
     /** Texture width. **/
+    @Getter
     protected int width;
     /** Texture height. **/
+    @Getter
     protected int height;
 
     /** Texture filtering. **/
+    @Getter
     protected TextureFiltering filtering = null;
     /** Texture wrapping mode. **/
+    @Getter
     protected TextureWrapping wrapping = null;
     /** Pixels color mode. **/
+    @Getter
     protected ColorMode colorMode;
 
     /**
@@ -196,11 +202,6 @@ public class GLTexture implements GlTex {
     }
 
     @Override
-    public TextureFiltering getFiltering() {
-        return this.filtering;
-    }
-
-    @Override
     public void setFiltering(TextureFiltering filtering) {
         GLController controller = GLTextureSystem.getGlController();
 
@@ -218,11 +219,6 @@ public class GLTexture implements GlTex {
     }
 
     @Override
-    public TextureWrapping getWrapping() {
-        return this.wrapping;
-    }
-
-    @Override
     public void setWrapping(TextureWrapping wrapping) {
         GLController controller = GLTextureSystem.getGlController();
 
@@ -237,26 +233,6 @@ public class GLTexture implements GlTex {
         }
 
         this.wrapping = wrapping;
-    }
-
-    @Override
-    public ColorMode getColorMode() {
-        return this.colorMode;
-    }
-
-    @Override
-    public int getHeight() {
-        return this.height;
-    }
-
-    @Override
-    public int getTexId() {
-        return this.texId;
-    }
-
-    @Override
-    public int getWidth() {
-        return this.width;
     }
 
     /**

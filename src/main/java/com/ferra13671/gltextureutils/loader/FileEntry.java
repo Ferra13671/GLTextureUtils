@@ -7,6 +7,7 @@ import lombok.Getter;
 /**
  * An object representing a file path. Used in {@link TextureLoaders#FILE_ENTRY} and {@link GifLoaders#FILE_ENTRY}.
  */
+//TODO Make a record
 @AllArgsConstructor
 @Getter
 public class FileEntry {

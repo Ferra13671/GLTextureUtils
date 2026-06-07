@@ -1,6 +1,7 @@
 package com.ferra13671.gltextureutils.loader;
 
 import com.ferra13671.gltextureutils.GLGif;
+import lombok.experimental.UtilityClass;
 
 import java.io.InputStream;
 import java.net.URI;
@@ -11,20 +12,22 @@ import java.net.URI;
  * @see GifLoader
  * @see GLGif
  */
-public final class GifLoaders {
-    public static final GifLoader<InputStream> INPUT_STREAM = new GifLoader<InputStream>() {
+//TODO move to GifLoader
+@UtilityClass
+public class GifLoaders {
+    public final GifLoader<InputStream> INPUT_STREAM = new GifLoader<>() {
         @Override
         public InputStream load(InputStream path) {
             return path;
         }
     };
-    public static final GifLoader<URI> URI = new GifLoader<URI>() {
+    public final GifLoader<URI> URI = new GifLoader<>() {
         @Override
         public InputStream load(URI path) throws Exception {
             return path.toURL().openStream();
         }
     };
-    public static final GifLoader<FileEntry> FILE_ENTRY = new GifLoader<FileEntry>() {
+    public final GifLoader<FileEntry> FILE_ENTRY = new GifLoader<>() {
         @Override
         public InputStream load(FileEntry path) {
             return path.getPathMode().streamCreateFunction.apply(path.getPath());

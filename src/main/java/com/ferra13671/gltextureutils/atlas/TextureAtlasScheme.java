@@ -6,6 +6,7 @@ import lombok.Getter;
 
 import java.util.HashMap;
 
+//TODO Make a record
 @Getter
 @AllArgsConstructor
 public class TextureAtlasScheme {
