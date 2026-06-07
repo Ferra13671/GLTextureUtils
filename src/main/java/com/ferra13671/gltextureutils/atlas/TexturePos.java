@@ -1,24 +1,13 @@
 package com.ferra13671.gltextureutils.atlas;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * An object that stores the 2D position of a texture.
  */
-//TODO Make a record
-@Getter
-@AllArgsConstructor
-public class TexturePos {
-    public final int x1;
-    public final int y1;
-    public final int x2;
-    public final int y2;
-
+public record TexturePos(int x1, int y1, int x2, int y2) {
     /**
      * Normalizes texture 2D position to UV coordinates.
      *
-     * @param width the width to which the texture position should be normalized.
+     * @param width  the width to which the texture position should be normalized.
      * @param height the height to which the texture position should be normalized.
      * @return UV coordinates of a texture.
      */

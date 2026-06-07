@@ -35,7 +35,7 @@ public class TextureAtlas implements GlTex {
                 .build();
 
         scheme.poses().forEach((tex, texturePos) -> {
-            this.texture.drawImage(tex, texturePos.getX1(), texturePos.getY1());
+            this.texture.drawImage(tex, texturePos.x1(), texturePos.y1());
             this.borders.put(tex.getName(), texturePos.toBorder(this.texture.getWidth(), this.texture.getHeight()));
         });
     }
