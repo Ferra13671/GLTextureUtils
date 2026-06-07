@@ -27,18 +27,11 @@ project.ext.lwjglVersion = "3.3.3"
 group = 'com.ferra13671'
 version = '1.0'
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
-}
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
-
     implementation rootProject
 
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
