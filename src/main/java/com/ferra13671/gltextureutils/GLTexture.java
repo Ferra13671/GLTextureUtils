@@ -62,13 +62,13 @@ public class GLTexture implements GlTex {
             this.width = glTextureInfo.getWidth();
             this.height = glTextureInfo.getHeight();
 
-            controller.texImage2D(GL11.GL_TEXTURE_2D, 0, this.colorMode.internalId, this.width, this.height, 0, this.colorMode.externalId, GL11.GL_UNSIGNED_BYTE, null);
+            controller.texImage2D(GL11.GL_TEXTURE_2D, 0, this.colorMode.internalFormatId(), this.width, this.height, 0, this.colorMode.externalFormatId(), GL11.GL_UNSIGNED_BYTE, null);
 
             if (glTextureInfo.getPixels() != null) {
                 long bufferAddress = MemoryUtil.memAddress(glTextureInfo.getPixels());
 
                 prepareDefaultPixelStore(controller);
-                controller.texSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, this.width, this.height, this.colorMode.externalId, GL11.GL_UNSIGNED_BYTE, bufferAddress);
+                controller.texSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, this.width, this.height, this.colorMode.externalFormatId(), GL11.GL_UNSIGNED_BYTE, bufferAddress);
 
                 if (glTextureInfo.isUsingStb())
                     nstbi_image_free(bufferAddress);
@@ -113,7 +113,7 @@ public class GLTexture implements GlTex {
             texture.setFiltering(this.filtering);
             texture.setWrapping(this.wrapping);
 
-            controller.texImage2D(GL11.GL_TEXTURE_2D, 0, texture.colorMode.internalId, texture.width, texture.height, 0, texture.colorMode.externalId, GL11.GL_UNSIGNED_BYTE, null);
+            controller.texImage2D(GL11.GL_TEXTURE_2D, 0, texture.colorMode.internalFormatId(), texture.width, texture.height, 0, texture.colorMode.externalFormatId(), GL11.GL_UNSIGNED_BYTE, null);
             prepareDefaultPixelStore(controller);
 
             controller.copyTexSubImage2D(
@@ -146,14 +146,14 @@ public class GLTexture implements GlTex {
         GLController controller = GLTextureSystem.getGlController();
 
         controller.run(() -> {
-            ByteBuffer byteBuffer = MemoryUtil.memAlloc(texture.getWidth() * texture.getHeight() * texture.getColorMode().components);
+            ByteBuffer byteBuffer = MemoryUtil.memAlloc(texture.getWidth() * texture.getHeight() * texture.getColorMode().pixelSize());
 
             controller.bindTexture(texture.getTexId());
-            controller.getTexImage(GL11.GL_TEXTURE_2D, 0, texture.getColorMode().externalId, GL11.GL_UNSIGNED_BYTE, byteBuffer);
+            controller.getTexImage(GL11.GL_TEXTURE_2D, 0, texture.getColorMode().externalFormatId(), GL11.GL_UNSIGNED_BYTE, byteBuffer);
             byteBuffer.flip();
 
             controller.bindTexture(getTexId());
-            controller.texSubImage2D(GL11.GL_TEXTURE_2D, 0, x, y, texture.getWidth(), texture.getHeight(), texture.getColorMode().externalId, GL11.GL_UNSIGNED_BYTE, MemoryUtil.memAddress(byteBuffer));
+            controller.texSubImage2D(GL11.GL_TEXTURE_2D, 0, x, y, texture.getWidth(), texture.getHeight(), texture.getColorMode().externalFormatId(), GL11.GL_UNSIGNED_BYTE, MemoryUtil.memAddress(byteBuffer));
             controller.bindTexture(0);
 
             setFiltering(this.filtering);
