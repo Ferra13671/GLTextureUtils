@@ -1,22 +1,14 @@
 package com.ferra13671.gltextureutils.builder;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.nio.ByteBuffer;
 
 /**
  * An object representing texture information.
+ *
+ * @param pixels   Pixels buffer.
+ * @param width    Texture width.
+ * @param height   Texture height.
+ * @param usingStb Whether stb is used when loading a texture or not.
  */
-@AllArgsConstructor
-@Getter
-public class GLTextureInfo {
-    /** Pixels buffer. **/
-    private final ByteBuffer pixels;
-    /** Texture width. **/
-    private final int width;
-    /** Texture height. **/
-    private final int height;
-    /** Whether stb is used when loading a texture or not. **/
-    private final boolean usingStb;
+public record GLTextureInfo(ByteBuffer pixels, int width, int height, boolean usingStb) {
 }

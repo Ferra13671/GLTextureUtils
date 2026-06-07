@@ -65,21 +65,21 @@ public class GLTexture implements GlTex {
             controller.bindTexture(texId);
             prepareDefaultTextureParameters(controller);
 
-            this.width = glTextureInfo.getWidth();
-            this.height = glTextureInfo.getHeight();
+            this.width = glTextureInfo.width();
+            this.height = glTextureInfo.height();
 
             controller.texImage2D(GL11.GL_TEXTURE_2D, 0, this.colorMode.internalFormatId(), this.width, this.height, 0, this.colorMode.externalFormatId(), GL11.GL_UNSIGNED_BYTE, null);
 
-            if (glTextureInfo.getPixels() != null) {
-                long bufferAddress = MemoryUtil.memAddress(glTextureInfo.getPixels());
+            if (glTextureInfo.pixels() != null) {
+                long bufferAddress = MemoryUtil.memAddress(glTextureInfo.pixels());
 
                 prepareDefaultPixelStore(controller);
                 controller.texSubImage2D(GL11.GL_TEXTURE_2D, 0, 0, 0, this.width, this.height, this.colorMode.externalFormatId(), GL11.GL_UNSIGNED_BYTE, bufferAddress);
 
-                if (glTextureInfo.isUsingStb())
+                if (glTextureInfo.usingStb())
                     nstbi_image_free(bufferAddress);
                 else
-                    MemoryUtil.memFree(glTextureInfo.getPixels());
+                    MemoryUtil.memFree(glTextureInfo.pixels());
             }
 
             controller.bindTexture(0);
